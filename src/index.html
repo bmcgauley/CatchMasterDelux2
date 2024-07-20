@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatchMaster Delux</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+    <link rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+    <!-- Firebase SDK scripts -->
+
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="index.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <h1>CatchMaster Delux</h1>
+        <div id="auth-container">
+            <button id="signInButton">Sign In with Google</button>
+            <button id="signOutButton" style="display: none;">Sign Out</button>
+            <span id="userDisplay"></span>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#pokedex">Pokédex</a></li>
+            <li><a href="#myteam">My Team</a></li>
+            <li><a href="#shinyhunt">Shiny Hunt</a></li>
+            <li><a href="#profile">Profile</a></li>
+        </ul>
+    </nav>
+    <main id="main-content">
+        <div class="container">
+            <div id="container">
+                <h2>Pokédex</h2>
+                <div id="filters">
+                    <select id="statusFilter" onchange="updateFilter(this.value)">
+                        <option value="all">All Pokemon</option>
+                        <option value="seen">Seen Pokemon</option>
+                        <option value="caught">Caught Pokemon</option>
+                        <option value="missing">Missing Pokemon</option>
+                    </select>
+                    <select id="gameFilter" onchange="updateGame(this.value)">
+                        <!-- This will be populated dynamically -->
+                    </select>
+                </div>
+                <div id="pokemon-container">
+                    <ol id="pokedex"></ol>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 CatchMaster Delux. All rights reserved.</p>
+    </footer>
+    <!-- <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyA0Nrmbjb297EbKLaBxyBpMEUeWXjgbGUU",
+          authDomain: "catchmaster-delux.firebaseapp.com",
+          projectId: "catchmaster-delux",
+          storageBucket: "catchmaster-delux.appspot.com",
+          messagingSenderId: "840913142770",
+          appId: "1:840913142770:web:c72e0087fac8854bd1616b",
+          measurementId: "G-XVGLX2EJZH"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script> -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+body {
+    font-family: "Pixelify Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #e3350d;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+nav {
+    background-color: #f0f0f0;
+    padding: 0.5rem;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+#pokemon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* ... (previous styles) ... */
+
+
+.pixelify-sans{
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pokemon-card {
+    list-style: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 40px;
+    width: 250px;
+    margin: 10px;
+    font-family: "Pixelify Sans", sans-serif;
+}
+#pokedex {
+    padding-inline-start: 0;
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-gap: 20px;
+}
+.pokemon-card:hover {
+    animation: bounce 0.5s linear;
+}
+@keyframes bounce {
+    20%{
+        transform: translateY(-6px);
+    }
+    40%{
+        transform: translateY(0px);
+    }
+    60%{
+        transform: translateY(-2px);
+    }
+    80%{
+        transform: translateY(0px);
+    }
+}
+.card-title {
+    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: normal;
+}
+.card-subtitle {
+    font-weight: lighter;
+    color: lightgray;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+.card-image {
+    height:7em;
+    margin: 0 auto;
+}
+.container {
+    padding:20px;
+    margin: 0 auto;
+}
+h1 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 54px;
+}
+.stat-bar {
+    height: 10px;
+    background-color: #e0e0e0;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.stat-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
