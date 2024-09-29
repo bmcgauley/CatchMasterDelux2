@@ -1,12 +1,9 @@
-import {
-    getAuth,
-    onAuthStateChanged,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signOut
-} from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
-import { getFirestore, collection, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
+import { updateUIForSignedInUser, updateUIForSignedOutUser } from './ui.js';
+import { fetchUserPokemonStatus } from './pokedex.js';
+import { fetchPokemon } from './fetchPokemon.js';
 
 // Firebase configuration
 const firebaseAppConfig = {
@@ -22,7 +19,26 @@ const firebaseAppConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseAppConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+let db = getFirestore(app);
+
+let currentUser = null;
+
+async function createUserDocument(user) {
+    const userDocRef = doc(db, 'users', user.uid);
+    const docSnap = await getDoc(userDocRef);
+
+    if (!docSnap.exists()) {
+        try {
+            await setDoc(userDocRef, {
+                email: user.email,
+                displayName: user.displayName,
+            });
+            console.log("User document created successfully");
+        } catch (error) {
+            console.error("Error creating user document:", error);
+        }
+    }
+}
 
 function signIn() {
     const provider = new GoogleAuthProvider();
@@ -37,23 +53,6 @@ function signIn() {
         .catch((error) => {
             console.error('Error during sign in:', error);
         });
-}
-
-async function createUserDocument(user) {
-    const userDocRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(userDocRef);
-
-    if (!docSnap.exists()) {
-        try {
-            await setDoc(userDocRef, {
-                email: user.email,
-                displayName: user.displayName
-            });
-            console.log("User document created successfully");
-        } catch (error) {
-            console.error("Error creating user document:", error);
-        }
-    }
 }
 
 function signOutUser() {
@@ -79,4 +78,14 @@ function clearLocalStorage() {
     }
 }
 
-export { signIn, signOutUser, auth, db };
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+        updateUIForSignedInUser();
+    } else {
+        currentUser = null;
+        updateUIForSignedOutUser();
+    }
+});
+
+export { signIn, signOutUser, auth, currentUser, clearLocalStorage, doc, getDoc, getFirestore, setDoc, db };
