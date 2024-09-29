@@ -6,7 +6,7 @@ import {
 	pokemonData,
 	pendingUpdates,
 	handlePokemonClick,
-	handlePokemonLongPress,
+	
 } from './pokedex.js';
 import { currentUser } from './auth.js';
 // import { initializePokebox } from './pokebox.js';
@@ -162,17 +162,27 @@ export function displayPokemon() {
 	// document.getElementById('pokedex').innerHTML = pokemonHTMLString;
 
 	// Add event listeners
-	document.querySelectorAll('.pokemon-card').forEach((card) => {
-		const pokemonId = card.getAttribute('data-id');
-		card.addEventListener('click', (e) => handlePokemonClick(pokemonId, e));
-		card.addEventListener('dblclick', (e) => handlePokemonClick(pokemonId, e));
-		const longPress = handlePokemonLongPress(pokemonId);
-		card.addEventListener('mousedown', longPress.start);
-		card.addEventListener('touchstart', longPress.start);
-		card.addEventListener('mouseup', longPress.cancel);
-		card.addEventListener('mouseleave', longPress.cancel);
-		card.addEventListener('touchend', longPress.cancel);
-	});
+    document.querySelectorAll('.pokemon-card').forEach((card) => {
+        const pokemonId = card.getAttribute('data-id');
+        const clickHandler = handlePokemonClick(pokemonId);
+        
+        // For mouse events
+        card.addEventListener('mousedown', clickHandler.start);
+        card.addEventListener('mouseup', clickHandler.end);
+        card.addEventListener('mouseleave', clickHandler.cancel);
+    
+        // For touch events
+        card.addEventListener('touchstart', (e) => {
+            clickHandler.start(e);
+            e.preventDefault();
+        });
+        card.addEventListener('touchend', (e) => {
+            clickHandler.end(e);
+            e.preventDefault();
+        });
+        card.addEventListener('touchcancel', clickHandler.cancel);
+    });
+    
 	window.prevPage = function () {
 		if (currentPage > 1) {
 			currentPage--;

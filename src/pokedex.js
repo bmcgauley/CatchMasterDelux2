@@ -5,8 +5,10 @@ import { displayPokemon } from './ui.js';
 // let db = getFirestore();
 let pokemonData = [];
 let pendingUpdates = {};
-const UPDATE_INTERVAL = 1 * 6 * 1000; // 5 minutes in milliseconds
+const UPDATE_INTERVAL = 15 * 60 * 1000; // 5 minutes in milliseconds
 const pokedex = document.getElementById('pokedex');
+const CLICK_DELAY = 300; // milliseconds
+const LONG_PRESS_DELAY = 500; // milliseconds
 
 
 export function savePokemonDataToLocalStorage() {
@@ -30,37 +32,24 @@ export function loadPokemonDataFromLocalStorage() {
     return null;
 }
 
+let updateTimeout;
+
+export function scheduleFirestoreUpdate() {
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(sendUpdatesToFirestore, UPDATE_INTERVAL);
+}
+
 export async function sendUpdatesToFirestore() {
-    if (!currentUser) return;
+    if (!currentUser || Object.keys(pendingUpdates).length === 0) return;
 
     const userDocRef = doc(db, 'users', currentUser.uid);
-    const docSnap = await getDoc(userDocRef);
     
-    let updates = {};
-    let hasChanges = false;
-
-    pokemonData.forEach(pokemon => {
-        const firestoreData = docSnap.exists() ? docSnap.data()[pokemon.id] : null;
-        if (!firestoreData || 
-            firestoreData.status !== pokemon.status || 
-            firestoreData.seen !== pokemon.seen) {
-            updates[pokemon.id] = {
-                status: pokemon.status,
-                seen: pokemon.seen
-            };
-            hasChanges = true;
-        }
-    });
-
-    if (hasChanges) {
-        try {
-            await setDoc(userDocRef, updates, {merge: true});
-            console.log('Updates sent to Firestore successfully');
-        } catch (error) {
-            console.error('Error updating Firestore:', error);
-        }
-    } else {
-        console.log('No changes to update in Firestore');
+    try {
+        await setDoc(userDocRef, pendingUpdates, { merge: true });
+        console.log('Updates sent to Firestore successfully');
+        pendingUpdates = {}; // Clear pending updates after successful send
+    } catch (error) {
+        console.error('Error updating Firestore:', error);
     }
 }
 
@@ -88,58 +77,80 @@ export async function fetchUserPokemonStatus() {
     }
 }
 
-export function handlePokemonClick(pokemonId, event) {
-    event.preventDefault();
-    const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
-    if (!pokemon) return;
+export function handlePokemonClick(pokemonId) {
+    let clickTimer = null;
+    let longPressTimer = null;
+    let clickCount = 0;
+    let isLongPress = false;
 
-    if (event.type === 'dblclick') {
-        updatePokemonStatus(pokemonId, 'caught');
-    } else {
-        const statusCycle = ['unseen', 'seen'];
-        const currentIndex = statusCycle.indexOf(pokemon.status);
-        const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
-        updatePokemonStatus(pokemonId, nextStatus);
-    }
-
-    savePokemonDataToLocalStorage();
-    displayPokemon();
-}
-
-export function handlePokemonLongPress(pokemonId) {
-    let pressTimer;
     return {
         start: (event) => {
             event.preventDefault();
-            pressTimer = setTimeout(() => {
-                updatePokemonStatus(pokemonId, 'shiny');
-                savePokemonDataToLocalStorage();
-                displayPokemon();
-            }, 1000);
+            clickCount++;
+            isLongPress = false;
+
+            if (clickCount === 1) {
+                longPressTimer = setTimeout(() => {
+                    if (clickCount === 1) {
+                        // Long press
+                        isLongPress = true;
+                        updatePokemonStatus(pokemonId, 'shiny');
+                        // console.log('Long press activated');
+                        clickCount = 0;
+                    }
+                }, LONG_PRESS_DELAY);
+            }
+        },
+        end: (event) => {
+            event.preventDefault();
+            clearTimeout(longPressTimer);
+            
+            if (!isLongPress) {
+                if (clickCount === 1) {
+                    clickTimer = setTimeout(() => {
+                        if (clickCount === 1) {
+                            // Single click
+                            const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
+                            const newStatus = pokemon.status === 'unseen' ? 'seen' : 'unseen';
+                            updatePokemonStatus(pokemonId, newStatus);
+                            // console.log('Single click activated');
+                        }
+                        clickCount = 0;
+                    }, CLICK_DELAY);
+                } else if (clickCount === 2) {
+                    clearTimeout(clickTimer);
+                    // Double click
+                    updatePokemonStatus(pokemonId, 'caught');
+                    // console.log('Double click activated');
+                    clickCount = 0;
+                }
+            }
         },
         cancel: () => {
-            clearTimeout(pressTimer);
+            clearTimeout(clickTimer);
+            clearTimeout(longPressTimer);
+            clickCount = 0;
+            isLongPress = false;
         }
     };
 }
 
 export function updatePokemonStatus(pokemonId, status) {
-    const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId))
+    const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
     
-    if (pokemon.id) {
+    if (pokemon) {
         pokemon.status = status;
-        if (status === 'seen' || status === 'caught' || status === 'shiny') {
-            pokemon.seen = true;
-            sendUpdatesToFirestore(pokemon, status)
-        } else if (status === 'unseen') {
-            pokemon.seen = false;
-            sendUpdatesToFirestore(pokemon, status)
-        }
+        pokemon.seen = status !== 'unseen';
+        
+        pendingUpdates[pokemon.id] = {
+            status: pokemon.status,
+            seen: pokemon.seen
+        };
+
+        scheduleFirestoreUpdate();
+        savePokemonDataToLocalStorage();
+        displayPokemon();
     }
-    console.log(pokemon.id)
-    savePokemonDataToLocalStorage();
-    // sendUpdatesToFirestore(pokemonId, status); // Make sure this function is implemented to update Firestore
-    displayPokemon();
 }
 
 
