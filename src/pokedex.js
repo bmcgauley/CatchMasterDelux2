@@ -1,11 +1,12 @@
 // import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
 import {db, getFirestore, doc, getDoc, setDoc, currentUser } from './auth.js';
 import { displayPokemon } from './ui.js';
+// import { boxData } from './pokebox.js';
 
 // let db = getFirestore();
-let pokemonData = [];
+const pokemonData = [];
 let pendingUpdates = {};
-const UPDATE_INTERVAL = 15 * 60 * 1000; // 5 minutes in milliseconds
+const UPDATE_INTERVAL = 1 * 6 * 1000; // 5 minutes in milliseconds
 const pokedex = document.getElementById('pokedex');
 const CLICK_DELAY = 300; // milliseconds
 const LONG_PRESS_DELAY = 500; // milliseconds
@@ -24,6 +25,7 @@ export function loadPokemonDataFromLocalStorage() {
     try {
         const storedData = localStorage.getItem('pokemonData');
         if (storedData) {
+            console.log('Loaded pokemonData from local storage:', JSON.parse(storedData));
             return JSON.parse(storedData);
         }
     } catch (error) {

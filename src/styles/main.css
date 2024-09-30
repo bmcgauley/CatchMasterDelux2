@@ -164,20 +164,31 @@ h1 {
 #main-container {
     display: flex;
 }
-
-#sorting-column {
+#games-container {
+    display: flex;
+}
+#sorting-column-pokedex {
     width: 200px;
     padding: 20px;
     background-color: #f0f0f0;
 }
-
+#sorting-column-games {
+    width: 200px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
 #pokedex {
     flex: 1;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
-
+#games {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 .pokemon-card {
     border: 2px solid transparent;
     transition: all 0.3s ease;
@@ -244,3 +255,27 @@ h1 {
 .pokemon-card.fire { border-color: #F08030; }
 .pokemon-card.water { border-color: #6890F0; }
 /* Add more type colors as needed */
+
+
+.boxart {
+    width: 100%;
+}
+.pokebox-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 Pokémon per row */
+    gap: 10px;
+}
+.pokemon-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain; /* Resize images appropriately */
+}
+.pokemon-slot.shiny {
+    border: 3px solid gold;
+    animation: shiny-glow 1s infinite alternate;
+}
+
+@keyframes shiny-glow {
+    0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.6); }
+    100% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+}

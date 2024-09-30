@@ -26,10 +26,10 @@ async function initializeApp() {
         const localData = loadPokemonDataFromLocalStorage();
         
         if (localData && localData.length > 0) {
-            console.log('Loaded data from local storage');
+            // console.log('Loaded data from local storage');
             pokemonData.push(...localData);
         } else {
-            console.log('No local data, fetching from API');
+            // console.log('No local data, fetching from API');
             await fetchPokemon();
         }
 
@@ -54,12 +54,12 @@ window.updateFilter = updateFilter;
 window.updatePokemonStatus = updatePokemonStatus;
 
 window.addEventListener('online', () => {
-    console.log('Back online, sending pending updates');
+    // console.log('Back online, sending pending updates');
     sendUpdatesToFirestore();
 });
 
 window.addEventListener('offline', () => {
-    console.log('Went offline, updates will be stored locally');
+    // console.log('Went offline, updates will be stored locally');
 });
 
 window.showPokebox = function (game) {

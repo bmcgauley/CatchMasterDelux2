@@ -33,7 +33,7 @@ async function createUserDocument(user) {
                 email: user.email,
                 displayName: user.displayName,
             });
-            console.log("User document created successfully");
+            // console.log("User document created successfully");
         } catch (error) {
             console.error("Error creating user document:", error);
         }
@@ -72,7 +72,7 @@ function clearLocalStorage() {
     try {
         localStorage.removeItem('pokemonData');
         localStorage.removeItem('pendingUpdates');
-        console.log('Local storage cleared successfully');
+        // console.log('Local storage cleared successfully');
     } catch (error) {
         console.error('Error clearing local storage:', error);
     }

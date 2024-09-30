@@ -71,8 +71,8 @@ export async function fetchPokemon() {
         }
     }
 
-    console.log(`Successfully fetched ${successfulFetches.length} Pokemon.`);
-    console.log(`Failed to fetch ${failedFetches.length} Pokemon:`, failedFetches);
+    // console.log(`Successfully fetched ${successfulFetches.length} Pokemon.`);
+    // console.log(`Failed to fetch ${failedFetches.length} Pokemon:`, failedFetches);
 
     const newPokemonData = await Promise.all(successfulFetches.map(async (data) => {
         try {
@@ -111,7 +111,7 @@ export async function fetchPokemon() {
     displayPokemon();
 
     if (failedFetches.length > 0) {
-        console.warn(`Failed to fetch data for ${failedFetches.length} Pokemon. IDs: ${failedFetches.join(', ')}`);
+        // console.warn(`Failed to fetch data for ${failedFetches.length} Pokemon. IDs: ${failedFetches.join(', ')}`);
         // Optionally, display a warning to the user
         alert(`Warning: Failed to fetch data for ${failedFetches.length} Pokemon. The list may be incomplete.`);
     }

@@ -33,28 +33,27 @@
             <li><a href="#profile">Profile</a></li>
         </ul>
     </nav>
-    
-    <main id="main-content">
-        <div class="container">
-            <div id="main-container"></div>
-    <button id="signInButton">Sign In</button>
-    <button id="signOutButton" style="display: none;">Sign Out</button>
-    <div id="userDisplay"></div>
-            <div id="pokemon-container">
-                <ol id="pokedex"></ol>
-            </div>
+    <!-- <div id="games"></div> -->
+   <div id="game-info"></div>
+        <div id="box-navigation">
+            <button id="prev-box">&lt; Previous Box</button>
+            <span id="current-box">Box 1</span>
+            <button id="next-box">Next Box &gt;</button>
+        </div>
+
+        <div id="pc-box"></div>
+
+        <div id="pokemon-details">
+            <h2>Pokémon Details</h2>
+            <div id="selected-pokemon"></div>
+        </div>
+
+        <div id="stats">
+            <p>Pokémon Caught: <span id="caught-count">0</span> / <span id="total-count">0</span></p>
+            <p>Completion: <span id="completion-percentage">0%</span></p>
         </div>
     </main>
-    <footer>
-        <p>&copy; 2024 CatchMaster Delux. All rights reserved.</p>
-    </footer>
-    <!-- JavaScript Files -->
-    <script type="module" src="auth.js"></script>
-    <script type="module" src="fetchPokemon.js"></script>
-    <script type="module" src="pokedex.js"></script>
-    <script type="module" src="ui.js"></script>
-    <script type="module" src="index.js"></script>
-    <script type="module" src="games.js"></script>
-</body>
 
+    <script type="module" src="/src/pokebox.js"></script>
+</body>
 </html>

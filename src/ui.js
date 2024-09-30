@@ -6,9 +6,9 @@ import {
 	pokemonData,
 	pendingUpdates,
 	handlePokemonClick,
-	
 } from './pokedex.js';
 import { currentUser } from './auth.js';
+import { loadGames } from './games.js';
 // import { initializePokebox } from './pokebox.js';
 // import { pokemonData } from './pokedex.js';
 
@@ -16,14 +16,29 @@ import { currentUser } from './auth.js';
 let currentFilter = 'all';
 let currentPage = 1;
 const pokemonPerPage = 20;
+
 export function updateMainDisplay() {
-	const mainContainer = document.getElementById('main-container');
+	let mainContainer = null;
+    if(window.location.pathname === "/src/pokedex.html") {
+        mainContainer = document.getElementById('main-container');
+        // console.log('in pokedex path')
+        // console.log(mainContainer)
+        mainContainer.innerHTML = createSortingColumn() + '<div id="pokedex"></div>';
+        displayPokemon();
+    } 
+    if(window.location.pathname === "/src/games.html") {
+        mainContainer = document.getElementById('games-container')
+        // console.log('in games path')
+        // console.log(mainContainer)
+        // mainContainer.innerHTML = createSortingColumn() + '<div id="sorting-column-games"></div>';
+        loadGames()
+    }
 	if (!mainContainer) {
 		console.error('Main container not found');
 		return;
 	}
-	mainContainer.innerHTML = createSortingColumn() + '<div id="pokedex"></div>';
-	displayPokemon();
+	
+	
 }
 function createSortingColumn() {
 	const generations = {
@@ -45,18 +60,7 @@ function createSortingColumn() {
 		html += `<button onclick="window.filterByGeneration(${range[0]}, ${range[1]})">${gen}</button>`;
 	}
 
-	html += '<h3>Sort by Game</h3>';
-	html += '<div class="game-covers">';
-	for (const game of games) {
-		html += `
-            <div class="game-cover" onclick="window.filterByGame('${game}')">
-                <img src="/images/game-covers/${game
-									.toLowerCase()
-									.replace(/\s+/g, '-')}.jpg" alt="${game} cover">
-                <span>${game}</span>
-            </div>
-        `;
-	}
+	
 	html += '</div></div>';
 
 	return html;
@@ -162,27 +166,27 @@ export function displayPokemon() {
 	// document.getElementById('pokedex').innerHTML = pokemonHTMLString;
 
 	// Add event listeners
-    document.querySelectorAll('.pokemon-card').forEach((card) => {
-        const pokemonId = card.getAttribute('data-id');
-        const clickHandler = handlePokemonClick(pokemonId);
-        
-        // For mouse events
-        card.addEventListener('mousedown', clickHandler.start);
-        card.addEventListener('mouseup', clickHandler.end);
-        card.addEventListener('mouseleave', clickHandler.cancel);
-    
-        // For touch events
-        card.addEventListener('touchstart', (e) => {
-            clickHandler.start(e);
-            e.preventDefault();
-        });
-        card.addEventListener('touchend', (e) => {
-            clickHandler.end(e);
-            e.preventDefault();
-        });
-        card.addEventListener('touchcancel', clickHandler.cancel);
-    });
-    
+	document.querySelectorAll('.pokemon-card').forEach((card) => {
+		const pokemonId = card.getAttribute('data-id');
+		const clickHandler = handlePokemonClick(pokemonId);
+
+		// For mouse events
+		card.addEventListener('mousedown', clickHandler.start);
+		card.addEventListener('mouseup', clickHandler.end);
+		card.addEventListener('mouseleave', clickHandler.cancel);
+
+		// For touch events
+		card.addEventListener('touchstart', (e) => {
+			clickHandler.start(e);
+			e.preventDefault();
+		});
+		card.addEventListener('touchend', (e) => {
+			clickHandler.end(e);
+			e.preventDefault();
+		});
+		card.addEventListener('touchcancel', clickHandler.cancel);
+	});
+
 	window.prevPage = function () {
 		if (currentPage > 1) {
 			currentPage--;
