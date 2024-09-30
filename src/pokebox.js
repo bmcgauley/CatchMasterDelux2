@@ -8,29 +8,27 @@ import { displayPokemon } from './ui.js';
 
 // let pokemonData = []
 let gameSpecificPokemon = [];
-let currentGameId = 'red';
-let currentBoxNumber = 1;
-const POKEMON_PER_BOX = 20; // Adjust based on the game generation
-let pendingUpdates = {};
-const UPDATE_INTERVAL = 1 * 6 * 1000; // 1 minute in milliseconds
+
+const POKEMON_PER_BOX = 20;
+const UPDATE_INTERVAL = 1000; // 1 minute in milliseconds
 const CLICK_DELAY = 300; // milliseconds
 const LONG_PRESS_DELAY = 500; // milliseconds
+
+let currentGameId = '';
+let currentBoxNumber = 1;
+let pendingUpdates = {};
+// Firestore update functions
+let updateTimeout;
 // console.log(pokemonData);
 // Function to initialize the Pokébox
 async function initPokebox() {
-	currentGameId = new URLSearchParams(window.location.search).get('game');
-	if (!currentGameId) {
-		console.error('No game ID provided');
-		return;
-	}
-	// console.log(currentGameId);
-	loadPokemonData();
-	filterPokemonForGame(currentGameId); // Now correctly assigns an array
-	loadUserPokemonStatus(); // Fetches user's Pokémon status from Firestore
-	displayGameInfo();
-	renderCurrentBox();
-	updateStats();
-	attachEventListeners();
+    currentGameId = new URLSearchParams(window.location.search).get('game') || 'red';
+    await loadPokemonData();
+    await loadGameSpecificData();
+    displayGameInfo();
+    renderCurrentBox();
+    updateStats();
+    attachEventListeners();
 }
 
 function filterPokemonForGame(gameId) {
@@ -53,22 +51,42 @@ function filterPokemonForGame(gameId) {
 
 // Function to load Pokémon data
 async function loadPokemonData() {
-    const storedData = JSON.parse(localStorage.getItem('boxData'));
-
-    if (storedData) {
-        gameSpecificPokemon = storedData.filter(pokemon => pokemon.games.includes(currentGameId));
-    } else {
+    let pokemonData = JSON.parse(localStorage.getItem('pokemonData'));
+    if (!pokemonData) {
         try {
-            await fetchUserPokemonStatus();
-            gameSpecificPokemon = JSON.parse(localStorage.getItem('boxData')).filter(pokemon => pokemon.games.includes(currentGameId));
+            pokemonData = await fetchPokemonDataFromAPI(); // You need to implement this function
+            localStorage.setItem('pokemonData', JSON.stringify(pokemonData));
         } catch (error) {
-            console.error('Error loading Pokémon data:', error);
+            console.error('Error fetching Pokémon data:', error);
+            pokemonData = [];
         }
     }
-
-    console.log("Filtered gameSpecificPokemon:", gameSpecificPokemon);
+    return pokemonData;
 }
-
+async function loadGameSpecificData() {
+    let gameData = JSON.parse(localStorage.getItem('gameData')) || {};
+    if (!gameData[currentGameId]) {
+        gameData[currentGameId] = {
+            pokemon: []
+        };
+        // Initialize with universal data, setting all as unseen
+        const universalData = await loadPokemonData();
+        gameData[currentGameId].pokemon = universalData
+            .filter(pokemon => pokemon.games.includes(currentGameId))
+            .map(pokemon => ({
+                id: pokemon.id,
+                status: 'unseen',
+                seen: false
+            }));
+        localStorage.setItem('gameData', JSON.stringify(gameData));
+    }
+    return gameData[currentGameId];
+}
+function saveGameSpecificData(gameData) {
+    let allGameData = JSON.parse(localStorage.getItem('gameData')) || {};
+    allGameData[currentGameId] = gameData;
+    localStorage.setItem('gameData', JSON.stringify(allGameData));
+}
 // Function to filter Pokémon for the specific game
 // function filterPokemonForGame(gameId) {
 //     // This function should implement the logic to determine which Pokémon are available in the specific game
@@ -139,111 +157,94 @@ function displayGameInfo() {
 }
 
 // Function to render the current PC box
-function renderCurrentBox() {
-	const pcBoxElement = document.getElementById('pc-box');
-    pcBoxElement.setAttribute('class', 'pokebox-grid')
-	pcBoxElement.innerHTML = '';
+async function renderCurrentBox() {
+    const pcBoxElement = document.getElementById('pc-box');
+    pcBoxElement.innerHTML = '';
+    pcBoxElement.setAttribute('class', 'pokebox-grid');
 
-	const startIndex = (currentBoxNumber - 1) * POKEMON_PER_BOX;
-	const endIndex = startIndex + POKEMON_PER_BOX;
+    const gameData = await loadGameSpecificData();
+    const universalData = await loadPokemonData();
 
-	for (let i = startIndex; i < endIndex; i++) {
-		// console.log('Start Index:', startIndex);
-		// console.log('End Index:', endIndex);
-		// console.log('gameSpecificPokemon Length:', gameSpecificPokemon.length);
-		// console.log('Filtered Pokémon for Game:', gameSpecificPokemon);
+    const startIndex = (currentBoxNumber - 1) * POKEMON_PER_BOX;
+    const endIndex = startIndex + POKEMON_PER_BOX;
 
-		const pokemon = gameSpecificPokemon[i];
-		if (pokemon) {
-            // console.log(pokemon);
-            
-            const pokemonElement = document.createElement('div');
-            pokemonElement.classList.add('pokemon-slot');
-            pokemonElement.dataset.id = pokemon.id;
-        
-            // Check if the Pokémon has been seen or caught
-            let imageSrc;
-            let pClass;
-            
-            if (pokemon.shiny) {
-                imageSrc = `${pokemon.imageShiny}`;  // Show shiny sprite if shiny
-                pokemonElement.classList.add('.shiny'); // Add shiny class for special effects
-            } else if (!pokemon.seen) {
-                imageSrc = `${pokemon.silhouetteImage}`;  // Use silhouette image if unseen
-            } else if (pokemon.caught) {
-                imageSrc = `${pokemon.image}`;   // Use Pokéball image if caught
-                pokemonElement.classList.add('.poke-ball-icon');
-            } else {
-                imageSrc = `${pokemon.image}`;       // Regular Pokémon sprite
-            }
-        
-            // Render Pokémon element
-            pokemonElement.innerHTML = `
-                <img src="${imageSrc}" alt="${pokemon.name}">
-                <p>${pokemon.name}</p>
-            `;
-        
-            // Add status-based class for styling (e.g., caught, unseen)
-            pokemonElement.classList.add(pokemon.status);
+    for (let i = startIndex; i < endIndex; i++) {
+        const pokemonGameData = gameData.pokemon[i];
+        if (pokemonGameData) {
+            const universalPokemonData = universalData.find(p => p.id === pokemonGameData.id);
+            const pokemonElement = createPokemonElement(pokemonGameData, universalPokemonData);
             pcBoxElement.appendChild(pokemonElement);
-		} else {
-			// Empty slot
-			pcBoxElement.appendChild(document.createElement('div'));
-		}
-	}
+        } else {
+            pcBoxElement.appendChild(document.createElement('div'));
+        }
+    }
 
-	document.getElementById(
-		'current-box'
-	).textContent = `Box ${currentBoxNumber}`;
+    document.getElementById('current-box').textContent = `Box ${currentBoxNumber}`;
 }
+function createPokemonElement(gameData, universalData) {
+    const pokemonElement = document.createElement('div');
+    pokemonElement.classList.add('pokemon-slot');
+    pokemonElement.dataset.id = gameData.id;
 
+    let imageSrc;
+    if (gameData.status === 'shiny') {
+        imageSrc = universalData.imageShiny;
+        pokemonElement.classList.add('shiny');
+    } else if (!gameData.seen) {
+        imageSrc = universalData.silhouetteImage;
+    } else {
+        imageSrc = universalData.image;
+    }
+
+    pokemonElement.innerHTML = `
+        <img src="${imageSrc}" alt="${universalData.name}">
+        <p>${universalData.name}</p>
+    `;
+
+    pokemonElement.classList.add(gameData.status);
+    return pokemonElement;
+}
 // Function to update stats
-function updateStats() {
-	const caughtCount = gameSpecificPokemon.filter(
-		(p) => p.status === 'caught' || p.status === 'shiny'
-	).length;
-	const totalCount = gameSpecificPokemon.length;
-	const completionPercentage = ((caughtCount / totalCount) * 100).toFixed(2);
+async function updateStats() {
+    const gameData = await loadGameSpecificData();
+    const caughtCount = gameData.pokemon.filter(p => p.status === 'caught' || p.status === 'shiny').length;
+    const totalCount = gameData.pokemon.length;
+    const completionPercentage = ((caughtCount / totalCount) * 100).toFixed(2);
 
-	document.getElementById('caught-count').textContent = caughtCount;
-	document.getElementById('total-count').textContent = totalCount;
-	document.getElementById(
-		'completion-percentage'
-	).textContent = `${completionPercentage}%`;
+    document.getElementById('caught-count').textContent = caughtCount;
+    document.getElementById('total-count').textContent = totalCount;
+    document.getElementById('completion-percentage').textContent = `${completionPercentage}%`;
 }
 
 // Function to attach event listeners
+// Function to attach event listeners
 function attachEventListeners() {
-	const pcBox = document.getElementById('pc-box');
-	pcBox.addEventListener('mousedown', handlePokemonInteractionStart);
-	pcBox.addEventListener('mouseup', handlePokemonInteractionEnd);
-	pcBox.addEventListener('touchstart', handlePokemonInteractionStart);
-	pcBox.addEventListener('touchend', handlePokemonInteractionEnd);
-	document
-		.getElementById('prev-box')
-		.addEventListener('click', () => changeBox(-1));
-	document
-		.getElementById('next-box')
-		.addEventListener('click', () => changeBox(1));
+    const pcBox = document.getElementById('pc-box');
+    pcBox.addEventListener('mousedown', handlePokemonInteractionStart);
+    pcBox.addEventListener('mouseup', handlePokemonInteractionEnd);
+    pcBox.addEventListener('touchstart', handlePokemonInteractionStart);
+    pcBox.addEventListener('touchend', handlePokemonInteractionEnd);
+    document.getElementById('prev-box').addEventListener('click', () => changeBox(-1));
+    document.getElementById('next-box').addEventListener('click', () => changeBox(1));
 }
 
 // Pokémon interaction handlers
 let activeInteraction = null;
 
 function handlePokemonInteractionStart(event) {
-	const pokemonSlot = event.target.closest('.pokemon-slot');
-	if (!pokemonSlot) return;
+    const pokemonSlot = event.target.closest('.pokemon-slot');
+    if (!pokemonSlot) return;
 
-	const pokemonId = pokemonSlot.dataset.id;
-	activeInteraction = handlePokemonClick(pokemonId);
-	activeInteraction.start(event);
+    const pokemonId = pokemonSlot.dataset.id;
+    activeInteraction = handlePokemonClick(pokemonId);
+    activeInteraction.start(event);
 }
 
 function handlePokemonInteractionEnd(event) {
-	if (activeInteraction) {
-		activeInteraction.end(event);
-		activeInteraction = null;
-	}
+    if (activeInteraction) {
+        activeInteraction.end(event);
+        activeInteraction = null;
+    }
 }
 
 // Existing handlePokemonClick function
@@ -269,17 +270,16 @@ function handlePokemonClick(pokemonId) {
                 }, LONG_PRESS_DELAY);
             }
         },
-        end: (event) => {
+        end: async (event) => {
             event.preventDefault();
             clearTimeout(longPressTimer);
 
             if (!isLongPress) {
                 if (clickCount === 1) {
-                    clickTimer = setTimeout(() => {
+                    clickTimer = setTimeout(async () => {
                         if (clickCount === 1) {
-                            const pokemon = gameSpecificPokemon.find(
-                                (p) => p.id === parseInt(pokemonId)
-                            );
+                            const gameData = await loadGameSpecificData();
+                            const pokemon = gameData.pokemon.find(p => p.id === parseInt(pokemonId));
                             const newStatus = pokemon.status === 'unseen' ? 'seen' : 'unseen';
                             updatePokemonStatus(pokemonId, newStatus);
                         }
@@ -302,40 +302,37 @@ function handlePokemonClick(pokemonId) {
 }
 
 // Function to update Pokémon status
-function updatePokemonStatus(pokemonId, status) {
-    const pokemon = gameSpecificPokemon.find((p) => p.id === parseInt(pokemonId));
+async function updatePokemonStatus(pokemonId, status) {
+    const gameData = await loadGameSpecificData();
+    const pokemon = gameData.pokemon.find(p => p.id === parseInt(pokemonId));
 
     if (pokemon) {
         pokemon.status = status;
         pokemon.seen = status !== 'unseen';
 
-        pendingUpdates[pokemon.id] = {
+        pendingUpdates[pokemonId] = {
             status: pokemon.status,
             seen: pokemon.seen,
         };
 
-        scheduleFirestoreUpdate();
-        
-        // Update local storage
-        const allPokemonData = JSON.parse(localStorage.getItem('boxData')) || [];
-        const pokemonIndex = allPokemonData.findIndex(p => p.id === parseInt(pokemonId));
-        if (pokemonIndex !== -1) {
-            allPokemonData[pokemonIndex] = {...allPokemonData[pokemonIndex], ...pokemon};
-        }
-        localStorage.setItem('boxData', JSON.stringify(allPokemonData));
+        console.log(`Updated Pokemon ${pokemonId} status: ${status}`);
+        console.log("Current pending updates:", pendingUpdates);
 
+        saveGameSpecificData(gameData);
+        scheduleFirestoreUpdate();
         renderCurrentBox();
         updateStats();
     }
 }
 
 // Function to change the current box
-function changeBox(direction) {
-	const totalBoxes = Math.ceil(gameSpecificPokemon.length / POKEMON_PER_BOX);
-	currentBoxNumber += direction;
-	if (currentBoxNumber < 1) currentBoxNumber = totalBoxes;
-	if (currentBoxNumber > totalBoxes) currentBoxNumber = 1;
-	renderCurrentBox();
+async function changeBox(direction) {
+    const gameData = await loadGameSpecificData();
+    const totalBoxes = Math.ceil(gameData.pokemon.length / POKEMON_PER_BOX);
+    currentBoxNumber += direction;
+    if (currentBoxNumber < 1) currentBoxNumber = totalBoxes;
+    if (currentBoxNumber > totalBoxes) currentBoxNumber = 1;
+    renderCurrentBox();
 }
 // function updatePokemonInLocalStorage(pokemonId, updatedData) {
 //     // Get existing data from local storage
@@ -354,25 +351,57 @@ function changeBox(direction) {
 //     localStorage.setItem('pokemonData', JSON.stringify(pokemonData));
 // }
 
-// Firestore update functions
-let updateTimeout;
 
+// let updateTimeout;
 function scheduleFirestoreUpdate() {
-	clearTimeout(updateTimeout);
-	updateTimeout = setTimeout(sendUpdatesToFirestore, UPDATE_INTERVAL);
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(sendUpdatesToFirestore, UPDATE_INTERVAL);
+    console.log(`Firestore update scheduled in ${(UPDATE_INTERVAL / 1000) / 60} minutes.`);
 }
 
 async function sendUpdatesToFirestore() {
-	if (!currentUser || Object.keys(pendingUpdates).length === 0) return;
+    if (!currentUser || Object.keys(pendingUpdates).length === 0) {
+        console.log("No updates to send or user not logged in");
+        return;
+    }
 
-	const gameDocRef = doc(db, 'users', currentUser.uid, 'games', currentGameId);
+    const gameDocRef = doc(db, 'users', currentUser.uid, 'games', currentGameId);
 
-	try {
-		await setDoc(gameDocRef, pendingUpdates, { merge: true });
-		pendingUpdates = {}; // Clear pending updates after successful send
-	} catch (error) {
-		console.error('Error updating Firestore:', error);
-	}
+    try {
+        console.log("Pending updates:", pendingUpdates);
+
+        // Fetch the current document
+        const docSnap = await getDoc(gameDocRef);
+        let currentData = docSnap.exists() ? docSnap.data() : { pokemon: {} };
+
+        // Merge pending updates with current data
+        for (const [pokemonId, updates] of Object.entries(pendingUpdates)) {
+            if (!currentData.pokemon[pokemonId]) {
+                currentData.pokemon[pokemonId] = {};
+            }
+            Object.assign(currentData.pokemon[pokemonId], updates);
+        }
+
+        console.log("Sending updates to Firestore:", currentData);
+        
+        await setDoc(gameDocRef, currentData, { merge: true });
+        console.log("Updates sent successfully");
+
+        // Verify the update
+        const updatedDocSnap = await getDoc(gameDocRef);
+        console.log("Updated Firestore document:", updatedDocSnap.data());
+
+        // Clear pending updates after successful send
+        pendingUpdates = {};
+    } catch (error) {
+        console.error('Error updating Firestore:', error);
+    }
+}
+
+// Helper function to trigger immediate update (for testing)
+function triggerImmediateUpdate() {
+    clearTimeout(updateTimeout);
+    sendUpdatesToFirestore();
 }
 
 // Local storage functions
@@ -398,8 +427,7 @@ function savePokeboxDataToLocalStorage() {
 // 	// return null;
 // }
 
-// Initialize the Pokébox when the DOM is loaded
-document.addEventListener('DOMContentLoaded', initPokebox);
+
 // export { boxData }
 document.querySelectorAll('.pokemon-icon').forEach(pokemon => {
     pokemon.setAttribute('draggable', true);
@@ -448,3 +476,5 @@ async function updateFirestorePokemonStatus(pokemonId, updatedData) {
     }
 }
 
+// Initialize the Pokébox when the DOM is loaded
+document.addEventListener('DOMContentLoaded', initPokebox);
