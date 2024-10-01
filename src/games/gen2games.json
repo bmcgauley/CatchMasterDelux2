@@ -1,0 +1,72 @@
+[
+    {
+        "id": "gold",
+        "title": "Pokemon Gold",
+        "region": ["US", "JPY"],
+        "releaseYear": 1996,
+        "platform": "Game Boy",
+        "condition": ["out-of-box", "in-box", "new"],
+        "boxArt": "images/game-cover/gold.jpg",
+        "inGameFeatures": {
+            "supportsTrading": true,
+            "battleSystemDifferences": "Special stat used for both Special Attack and Defense"
+        },
+        "gameGenre": "Mainline",
+        "version": "Gold",
+        "languagesAvailable": ["Japanese", "English"],
+        "saveSystem": "Battery Save",
+        "gamePrice": {
+            "originalPrice": 19.99,
+            "pricePaid": 100,
+            "currency": "USD"
+        },
+        "gameCopies": 1,
+        "gameURL": "https://bulbapedia.bulbagarden.net/wiki/Pokémon_Gold_and_Silver_Versions"
+    },
+    {
+        "id": "silver",
+        "title": "Pokemon Silver",
+        "region": ["US", "JPY"],
+        "releaseYear": 1996,
+        "platform": "Game Boy",
+        "condition": ["out-of-box", "in-box", "new"],
+        "boxArt": "images/game-cover/silver.jpg",
+        "inGameFeatures": {
+            "supportsTrading": true,
+            "battleSystemDifferences": "Special stat used for both Special Attack and Defense"
+        },
+        "gameGenre": "Mainline",
+        "version": "Silver",
+        "languagesAvailable": ["Japanese", "English"],
+        "saveSystem": "Battery Save",
+        "gamePrice": {
+            "originalPrice": 19.99,
+            "currency": "USD"
+        },
+        "gameCopies": 1,
+        "gameURL": "https://bulbapedia.bulbagarden.net/wiki/Pokémon_Gold_and_Silver_Versions"
+    },
+    {
+        "id": "crystal",
+        "title": "Pokemon Crystal",
+        "region": ["US", "JPY"],
+        "releaseYear": 1998,
+        "platform": "Game Boy",
+        "condition": ["out-of-box", "in-box", "new"],
+        "boxArt": "images/game-cover/crystal.jpg",
+        "inGameFeatures": {
+            "supportsTrading": true,
+            "battleSystemDifferences": "Special stat used for both Special Attack and Defense"
+        },
+        "gameGenre": "Mainline",
+        "version": "Crystal",
+        "languagesAvailable": ["Japanese", "English"],
+        "saveSystem": "Battery Save",
+        "gamePrice": {
+            "originalPrice": 39.99,
+            "currency": "USD"
+        },
+        "gameCopies": 1,
+        "gameURL": "https://bulbapedia.bulbagarden.net/wiki/Pokémon_Crystal_Versions"
+    }
+]

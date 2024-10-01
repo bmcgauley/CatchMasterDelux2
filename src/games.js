@@ -1,87 +1,113 @@
 import { db, getFirestore, doc, getDoc, setDoc, currentUser } from './auth.js';
 import { displayPokemon } from './ui.js';
 import { loadPokemonDataFromLocalStorage, pokemonData } from './pokedex.js';
-
+const gameLocations = ['./games/gen1games.json', './games/gen2games.json'];
+// console.log(gameLocations);
 let pokemonGames = [];
 
 // Function to navigate to the Pokébox page
 export function navigateToPokeBox(gameId) {
-    window.location.href = `./pokebox.html?game=${gameId}`;
+	window.location.href = `./pokebox.html?game=${gameId}`;
 }
 
 function fetchPokemonGames() {
-    return fetch('./gen1games.json')
-        .then(response => response.json())
-        .then(data => {
-            pokemonGames = data;
-            // console.log("Fetched games:", pokemonGames);
-            loadGames();  // Call the loadGames function after fetching
-        })
-        .catch(error => {
-            console.error('Error loading the game data:', error);
-        });
+    
+	let gen = [];
+	return fetch(gameLocations[0])
+		.then((response) => response.json())
+		.then((data) => {
+			pokemonGames.push(data[0]);
+			pokemonGames.push(data[1]);
+			pokemonGames.push(data[2]);
+            loadGames(pokemonGames)
+		})
+		.then(
+			fetch(gameLocations[1])
+				.then((response) => response.json())
+				.then((data) => {
+					pokemonGames.push(data[0]);
+					pokemonGames.push(data[1]);
+					pokemonGames.push(data[2]);
+                    loadGames(pokemonGames)
+				})
+		)
+		
+
+		.catch((error) => {
+			console.error('Error loading the game data:', error);
+		});
 }
-
-
 // Function to perform the Firestore save
 function saveToFirestore(gameId, regions, paidPrice, retailPrice) {
-    const userId = currentUser.uid; // Get the current user ID
-    const gameData = {
-        regionsOwned: regions,
-        paidPrice: parseFloat(paidPrice),
-        retailPrice: retailPrice
-    };
-    const gameDocRef = doc(db, `users/${userId}/games/${gameId}`);
-    
-    setDoc(gameDocRef, gameData, { merge: true })
-        .then(() => {
-            console.log(`Saved data for ${gameId} successfully!`);
-        })
-        .catch((error) => {
-            console.error("Error saving data:", error);
-        });
+	const userId = currentUser.uid; // Get the current user ID
+	const gameData = {
+		regionsOwned: regions,
+		paidPrice: parseFloat(paidPrice),
+		retailPrice: retailPrice
+	};
+	const gameDocRef = doc(db, `users/${userId}/games/${gameId}`);
+
+	setDoc(gameDocRef, gameData, { merge: true })
+		.then(() => {
+			console.log(`Saved data for ${gameId} successfully!`);
+		})
+		.catch((error) => {
+			console.error('Error saving data:', error);
+		});
 }
-
-
 
 // Call this function after rendering the game tiles
 export function saveGameToFirestore(gameId) {
-    const regionSelect = document.getElementById(`languagesAvailable-${gameId}`);
-    const paidPriceInput = document.getElementById(`pricePaid-${gameId}`);
-    const statusSelect = document.getElementById(`game-${gameId}-status`);
-    const quantityInput = document.getElementById(`game-${gameId}-quantity`);
-    
-    console.log(`Saving game ${gameId}:`, regionSelect.value, paidPriceInput.value);
-    
-    const selectedRegions = Array.from(regionSelect.selectedOptions)
-        .map(option => option.value);
+	const regionSelect = document.getElementById(`languagesAvailable-${gameId}`);
+	const paidPriceInput = document.getElementById(`pricePaid-${gameId}`);
+	const statusSelect = document.getElementById(`game-${gameId}-status`);
+	const quantityInput = document.getElementById(`game-${gameId}-quantity`);
 
-    const paidPrice = paidPriceInput.value;
-    const status = statusSelect.value;
-    const quantity = quantityInput.value;
+	console.log(
+		`Saving game ${gameId}:`,
+		regionSelect.value,
+		paidPriceInput.value
+	);
 
-    const retailPriceElement = document.getElementById(`retail-price-${gameId}`);
-    const retailPrice = retailPriceElement ? retailPriceElement.textContent : null;
+	const selectedRegions = Array.from(regionSelect.selectedOptions).map(
+		(option) => option.value
+	);
 
-    saveToFirestore(gameId, selectedRegions, paidPrice, retailPrice, status, quantity);
+	const paidPrice = paidPriceInput.value;
+	const status = statusSelect.value;
+	const quantity = quantityInput.value;
+
+	const retailPriceElement = document.getElementById(`retail-price-${gameId}`);
+	const retailPrice = retailPriceElement
+		? retailPriceElement.textContent
+		: null;
+
+	saveToFirestore(
+		gameId,
+		selectedRegions,
+		paidPrice,
+		retailPrice,
+		status,
+		quantity
+	);
 }
 
 // Updated loadGames function
 export function loadGames() {
-    const gamesContainer = document.getElementById('games');
-    // Check if the element exists
-    if (!gamesContainer) {
-        console.error('Could not find the #games container element.');
-        return;
-    }
+	const gamesContainer = document.getElementById('games');
+	// Check if the element exists
+	if (!gamesContainer) {
+		console.error('Could not find the #games container element.');
+		return;
+	}
 
-    gamesContainer.innerHTML = '<h3>Sort by Game</h3>';
+	gamesContainer.innerHTML = '<h3>Sort by Game</h3>';
 
-    pokemonGames.forEach(game => {
-        // console.log(pokemonGames)
-        const gameHTML = `
+	pokemonGames.forEach((game) => {
+		console.log(pokemonGames)
+		const gameHTML = `
             <div class="game-tile" data-game-id="${game.id}">
-                <img src="${game.boxArt}" alt="${game.title} cover">
+                <img class="boxart" id="boxart" src="${game.boxArt}" alt="${game.title} cover">
                 <h3>${game.title}</h3>
                 <p>Region: ${game.region}</p>
                 <p>Released: ${game.releaseYear}</p>
@@ -115,33 +141,33 @@ export function loadGames() {
                 </p>
             </div>
         `;
-        gamesContainer.innerHTML += gameHTML;
-    });
+		gamesContainer.innerHTML += gameHTML;
+	});
 
-    // Attach event listeners after loading games
-    attachSaveButtonListeners();
-    attachManagePokeboxListeners();
+	// Attach event listeners after loading games
+	attachSaveButtonListeners();
+	attachManagePokeboxListeners();
 }
 
 // Updated attachSaveButtonListeners function
 function attachSaveButtonListeners() {
-    document.querySelectorAll('.save-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const gameId = this.getAttribute('data-game-id');
-            // console.log(gameId)
-            console.log(`Save button clicked for game ${gameId}`);
-            saveGameToFirestore(gameId);
-        });
-    });
+	document.querySelectorAll('.save-button').forEach(button => {
+		button.addEventListener('click', function() {
+			const gameId = this.getAttribute('data-game-id');
+			// console.log(gameId)
+			console.log(`Save button clicked for game ${gameId}`);
+			saveGameToFirestore(gameId);
+		});
+	});
 }
 
 function attachManagePokeboxListeners() {
-    document.querySelectorAll('.manage-pokebox').forEach(button => {
-        button.addEventListener('click', function() {
-            const gameId = this.getAttribute('data-game-id');
-            navigateToPokeBox(gameId);
-        });
-    });
+	document.querySelectorAll('.manage-pokebox').forEach(button => {
+		button.addEventListener('click', function() {
+			const gameId = this.getAttribute('data-game-id');
+			navigateToPokeBox(gameId);
+		});
+	});
 }
 
 // Event listener for page load

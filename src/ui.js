@@ -26,13 +26,13 @@ export function updateMainDisplay() {
         mainContainer.innerHTML = createSortingColumn() + '<div id="pokedex"></div>';
         displayPokemon();
     } 
-    if(window.location.pathname === "/src/games.html") {
-        mainContainer = document.getElementById('games-container')
-        // console.log('in games path')
-        // console.log(mainContainer)
-        // mainContainer.innerHTML = createSortingColumn() + '<div id="sorting-column-games"></div>';
-        loadGames()
-    }
+    // if(window.location.pathname === "/src/games.html") {
+    //     mainContainer = document.getElementById('games-container')
+    //     // console.log('in games path')
+    //     // console.log(mainContainer)
+    //     // mainContainer.innerHTML = createSortingColumn() + '<div id="sorting-column-games"></div>';
+    //     loadGames()
+    // }
 	if (!mainContainer) {
 		console.error('Main container not found');
 		return;

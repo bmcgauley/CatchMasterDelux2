@@ -162,7 +162,13 @@ h1 {
 
 */
 #main-container {
-    display: flex;
+    display: flex wrap;
+    width: 75dvw;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50dvh;
+    
+    
 }
 #games-container {
     display: flex;
@@ -213,17 +219,20 @@ h1 {
 
 
 .pokedex-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    /* display: grid;
+    grid-template-columns: repeat(5, 1px); */
+    display: flex;
+    flex-direction: column wrap;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .pokemon-card {
-    width: 100%;
+    width: 12.5%;
     /* aspect-ratio: 1 / 1; */
     display: flex;
     flex-direction: column;
+    columns: 10;
     align-items: center;
     justify-content: center;
     border: 2px solid #ccc;
@@ -258,17 +267,48 @@ h1 {
 
 
 .boxart {
-    width: 100%;
+    width: 250px;
 }
+
 .pokebox-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 Pokémon per row */
-    gap: 10px;
+    display:flex;
+    flex-direction: row;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    align-items: start;
+    /* width: fit-content; */
+}
+.pokebox-grid::before {
+    z-index: -12;
+    content: "";
+    background-image: url("https://archives.bulbagarden.net/media/upload/5/59/Box_Seafloor_FRLG.png");
+    
+    background-size: cover; 
+    position: absolute;
+    top: -5%;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.29;
+    /* background-position-y: 30%; */
+    /* background-blend-mode: screen; */
+}
+#pc-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0%;
 }
 .pokemon-icon {
     width: 64px;
     height: 64px;
     object-fit: contain; /* Resize images appropriately */
+}
+.pokemon-slot {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
 }
 .pokemon-slot.shiny {
     border: 3px solid gold;

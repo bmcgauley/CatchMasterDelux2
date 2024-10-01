@@ -25,7 +25,7 @@ export function loadPokemonDataFromLocalStorage() {
     try {
         const storedData = localStorage.getItem('pokemonData');
         if (storedData) {
-            console.log('Loaded pokemonData from local storage:', JSON.parse(storedData));
+            // console.log('Loaded pokemonData from local storage:', JSON.parse(storedData));
             return JSON.parse(storedData);
         }
     } catch (error) {
@@ -115,15 +115,16 @@ export function handlePokemonClick(pokemonId) {
                             const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
                             const newStatus = pokemon.status === 'unseen' ? 'seen' : 'unseen';
                             updatePokemonStatus(pokemonId, newStatus);
-                            // console.log('Single click activated');
+                            console.log('Single click activated');
                         }
                         clickCount = 0;
                     }, CLICK_DELAY);
                 } else if (clickCount === 2) {
+                    console.log(clickCount)
                     clearTimeout(clickTimer);
                     // Double click
                     updatePokemonStatus(pokemonId, 'caught');
-                    // console.log('Double click activated');
+                    console.log('Double click activated');
                     clickCount = 0;
                 }
             }
@@ -156,4 +157,4 @@ export function updatePokemonStatus(pokemonId, status) {
 }
 
 
-export {   pokemonData, pendingUpdates };
+export {   pokemonData, pendingUpdates, CLICK_DELAY, LONG_PRESS_DELAY };

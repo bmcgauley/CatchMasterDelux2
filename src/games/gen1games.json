@@ -45,5 +45,28 @@
         },
         "gameCopies": 1,
         "gameURL": "https://bulbapedia.bulbagarden.net/wiki/Pokémon_Red_and_Blue_Versions"
+    },
+    {
+        "id": "yellow",
+        "title": "Pokemon Yellow",
+        "region": ["US", "JPY"],
+        "releaseYear": 1998,
+        "platform": "Game Boy",
+        "condition": ["out-of-box", "in-box", "new"],
+        "boxArt": "images/game-cover/yellow.jpg",
+        "inGameFeatures": {
+            "supportsTrading": true,
+            "battleSystemDifferences": "Special stat used for both Special Attack and Defense"
+        },
+        "gameGenre": "Mainline",
+        "version": "Yellow",
+        "languagesAvailable": ["Japanese", "English"],
+        "saveSystem": "Battery Save",
+        "gamePrice": {
+            "originalPrice": 39.99,
+            "currency": "USD"
+        },
+        "gameCopies": 1,
+        "gameURL": "https://bulbapedia.bulbagarden.net/wiki/Pokémon_Red_and_Blue_Versions"
     }
 ]
