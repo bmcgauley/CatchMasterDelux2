@@ -19,7 +19,24 @@ import {
     sendUpdatesToFirestore,
     pokemonData,
 } from './pokedex.js';
+// src/index.js
+import { getPokemon, getPokemonSpecies } from './pokedexService.js';
 
+// async function init() {
+//   try {
+//     const pokemon = await getPokemon('pikachu');
+//     console.log('Pokemon data:', pokemon);
+
+//     const species = await getPokemonSpecies('pikachu');
+//     console.log('Pokemon species data:', species);
+//   } catch (error) {
+//     console.error('Failed to initialize:', error);
+//   }
+// }
+
+// init();
+
+init();
 async function initializeApp() {
     try {
         // Try to load data from local storage

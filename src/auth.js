@@ -16,6 +16,8 @@ const firebaseAppConfig = {
     measurementId: 'G-XVGLX2EJZH'
 };
 
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseAppConfig);
 const auth = getAuth(app);
@@ -88,4 +90,4 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-export { signIn, signOutUser, auth, currentUser, clearLocalStorage, doc, getDoc, getFirestore, setDoc, db };
+export { signIn, signOutUser, auth, currentUser, clearLocalStorage, doc, getDoc, getFirestore, setDoc, db};

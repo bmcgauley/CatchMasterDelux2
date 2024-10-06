@@ -5,10 +5,12 @@ import {
 	savePokemonDataToLocalStorage,
 	pokemonData,
 	pendingUpdates,
-	handlePokemonClick,
+	// handlePokemonClick,
 } from './pokedex.js';
 import { currentUser } from './auth.js';
 import { loadGames } from './games.js';
+import { currentGameId, handlePokemonBoxClick } from './pokebox.js';
+import { getGameSpecificPokemon } from './pokedexService.js';
 // import { initializePokebox } from './pokebox.js';
 // import { pokemonData } from './pokedex.js';
 
@@ -19,26 +21,25 @@ const pokemonPerPage = 20;
 
 export function updateMainDisplay() {
 	let mainContainer = null;
-    if(window.location.pathname === "/src/pokedex.html") {
-        mainContainer = document.getElementById('main-container');
-        // console.log('in pokedex path')
-        // console.log(mainContainer)
-        mainContainer.innerHTML = createSortingColumn() + '<div id="pokedex"></div>';
-        displayPokemon();
-    } 
-    // if(window.location.pathname === "/src/games.html") {
-    //     mainContainer = document.getElementById('games-container')
-    //     // console.log('in games path')
-    //     // console.log(mainContainer)
-    //     // mainContainer.innerHTML = createSortingColumn() + '<div id="sorting-column-games"></div>';
-    //     loadGames()
-    // }
+	if (window.location.pathname === '/src/pokedex.html') {
+		mainContainer = document.getElementById('main-container');
+		// console.log('in pokedex path')
+		// console.log(mainContainer)
+		mainContainer.innerHTML =
+			createSortingColumn() + '<div id="pokedex"></div>';
+		displayPokemon();
+	}
+	// if(window.location.pathname === "/src/games.html") {
+	//     mainContainer = document.getElementById('games-container')
+	//     // console.log('in games path')
+	//     // console.log(mainContainer)
+	//     // mainContainer.innerHTML = createSortingColumn() + '<div id="sorting-column-games"></div>';
+	//     loadGames()
+	// }
 	if (!mainContainer) {
 		console.error('Main container not found');
 		return;
 	}
-	
-	
 }
 function createSortingColumn() {
 	const generations = {
@@ -60,7 +61,6 @@ function createSortingColumn() {
 		html += `<button onclick="window.filterByGeneration(${range[0]}, ${range[1]})">${gen}</button>`;
 	}
 
-	
 	html += '</div></div>';
 
 	return html;
@@ -92,83 +92,59 @@ function getAppropriateImage(pokemon) {
 		return pokemon.image;
 	}
 }
-/////////////////////////////////////////////////////////////////////////////////
-//    Removed Stat Bars from Below
-/////////////////////////////////////////////////////////////////////////////////
-// <p>Games: ${pokemon.games.join(', ')}</p>
-// ${createStatBar('Health', pokemon.hp)}
-// ${createStatBar('Attack', pokemon.attack)}
-// ${createStatBar('Defense', pokemon.defense)}
-// ${createStatBar('Special Attack', pokemon.sp_atk)}
-// ${createStatBar('Special Defense', pokemon.sp_def)}
-// ${createStatBar('Speed', pokemon.speed)}
-// <li class="pokemon-card ${pokemon.status} ${
-//     pokemon.type.split(', ')[0]
-// }" data-id="${pokemon.id}">
-//     <img class="card-image" src="${getAppropriateImage(
-//                         pokemon
-//                     )}" alt="${pokemon.name}"/>
-//     ${
-//                         pokemon.status === 'caught'
-//                             ? '<div class="pokeball-icon"></div>'
-//                             : ''
-//                     }
-// <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
-// <p class="card-subtitle">Type: ${pokemon.type}</p>
-// <p>Status: ${pokemon.status}</p>
-
-// ${createTotalBar('Total', pokemon.total)}
-
-// </li>
-export function displayPokemon() {
+export async function displayPokemon(pokemon) {
 	// export function displayPokemon() {
-	const filteredPokemon = filterPokemon();
-	const totalPages = Math.ceil(filteredPokemon.length / pokemonPerPage);
-	const startIndex = (currentPage - 1) * pokemonPerPage;
-	const endIndex = startIndex + pokemonPerPage;
-	const paginatedPokemon = filteredPokemon.slice(startIndex, endIndex);
+	// const filteredPokemon = await getGameSpecificPokemon(currentGameId.pokemon);
+	// console.log(filteredPokemon)
+	// const totalPages = Math.ceil(filteredPokemon.length / pokemonPerPage);
+	// const startIndex = (currentPage - 1) * pokemonPerPage;
+	// const endIndex = startIndex + pokemonPerPage;
+	// const paginatedPokemon = filteredPokemon.slice(startIndex, endIndex);
 
-	const pokemonHTMLString = paginatedPokemon
-		.map(
-			(pokemon) => `
-            <li class="pokemon-card ${pokemon.status} ${
-				pokemon.type.split(', ')[0]
-			}" data-id="${pokemon.id}">
-    <img class="card-image" src="${getAppropriateImage(pokemon)}" alt="${
-				pokemon.name
-			}"/>
-    ${pokemon.status === 'caught' ? '<div class="pokeball-icon"></div>' : ''}
+	console.log(pokemon.status);
+	// 	let pokemonHTMLString = paginatedPokemon
+	// 		.map(
+	// 			(pokemon) => `
+	//             <li class="pokemon-card ${pokemon.status} ${
+	// 				pokemon.type.split(', ')[0]
+	// 			}" data-id="${pokemon.id}">
+	//     <img class="card-image" src="${getAppropriateImage(pokemon)}" alt="${
+	// 				pokemon.name
+	// 			}"/>
+	//     ${pokemon.status === 'caught' ? '<div class="pokeball-icon"></div>' : ''}
 
+	// </li>
+	//     `
+	// 		)
+	// 		.join('');
 
-</li>
-    `
-		)
-		.join('');
+	// 	const paginationHTML = `
+	//         <div class="pagination">
+	//             <button class="nav-button prev" onclick="prevPage()" ${
+	// 							currentPage === 1 ? 'disabled' : ''
+	// 						}>◀</button>
+	//             <span>Page ${currentPage} of ${totalPages}</span>
+	//             <button class="nav-button next" onclick="nextPage()" ${
+	// 							currentPage === totalPages ? 'disabled' : ''
+	// 						}>▶</button>
+	//         </div>
+	//     `;
 
-	const paginationHTML = `
-        <div class="pagination">
-            <button class="nav-button prev" onclick="prevPage()" ${
-							currentPage === 1 ? 'disabled' : ''
-						}>◀</button>
-            <span>Page ${currentPage} of ${totalPages}</span>
-            <button class="nav-button next" onclick="nextPage()" ${
-							currentPage === totalPages ? 'disabled' : ''
-						}>▶</button>
-        </div>
-    `;
-
-	document.getElementById('pokedex').innerHTML = `
-        <div class="pokedex-grid">
-            ${pokemonHTMLString}
-        </div>
-        ${paginationHTML}
-    `;
+	// 	document.getElementById('pokebox-grid').innerHTML = `
+	//         <div class="pokedex-grid">
+	//             ${pokemonHTMLString}
+	//         </div>
+	//         ${paginationHTML}
+	//     `;
 	// document.getElementById('pokedex').innerHTML = pokemonHTMLString;
 
 	// Add event listeners
 	document.querySelectorAll('.pokemon-card').forEach((card) => {
 		const pokemonId = card.getAttribute('data-id');
-		const clickHandler = handlePokemonClick(pokemonId);
+		
+		
+
+		const clickHandler = handlePokemonBoxClick(pokemonId);
 
 		// For mouse events
 		card.addEventListener('mousedown', clickHandler.start);
@@ -225,7 +201,7 @@ export function updateFilter(filter) {
 	displayPokemon();
 }
 
-function createSilhouetteImage(spriteUrl) {
+export function createSilhouetteImage(spriteUrl) {
 	return new Promise((resolve, reject) => {
 		const img = new Image();
 		img.crossOrigin = 'Anonymous'; // To avoid CORS issues
@@ -320,7 +296,6 @@ window.filterByGame = function (game) {
 export {
 	updateUIForSignedInUser,
 	updateUIForSignedOutUser,
-	createSilhouetteImage,
 	createTotalBar,
 	createStatBar,
 };

@@ -11,7 +11,7 @@ export function resetPokemonStatus() {
 
 export function updatePokemonStatus(pokemonId, status) {
     if (!currentUser) return;
-
+    
     const userDocRef = doc(db, 'users', currentUser.uid);
     let update = { [pokemonId]: status };
 

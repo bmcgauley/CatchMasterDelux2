@@ -208,7 +208,10 @@ h1 {
     border-color: gold;
     background: linear-gradient(45deg, #FFD700, #FFA500);
 }
-
+/* #shiny {
+    border-color: gold;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+} */
 .pokemon-card img {
     transition: all 0.3s ease;
 }

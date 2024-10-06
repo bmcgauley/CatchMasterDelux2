@@ -79,64 +79,64 @@ export async function fetchUserPokemonStatus() {
     }
 }
 
-export function handlePokemonClick(pokemonId) {
-    let clickTimer = null;
-    let longPressTimer = null;
-    let clickCount = 0;
-    let isLongPress = false;
+// export function handlePokemonClick(pokemonId) {
+//     let clickTimer = null;
+//     let longPressTimer = null;
+//     let clickCount = 0;
+//     let isLongPress = false;
 
-    return {
-        start: (event) => {
-            event.preventDefault();
-            clickCount++;
-            isLongPress = false;
+//     return {
+//         start: (event) => {
+//             event.preventDefault();
+//             clickCount++;
+//             isLongPress = false;
 
-            if (clickCount === 1) {
-                longPressTimer = setTimeout(() => {
-                    if (clickCount === 1) {
-                        // Long press
-                        isLongPress = true;
-                        updatePokemonStatus(pokemonId, 'shiny');
-                        // console.log('Long press activated');
-                        clickCount = 0;
-                    }
-                }, LONG_PRESS_DELAY);
-            }
-        },
-        end: (event) => {
-            event.preventDefault();
-            clearTimeout(longPressTimer);
+//             if (clickCount === 1) {
+//                 longPressTimer = setTimeout(() => {
+//                     if (clickCount === 1) {
+//                         // Long press
+//                         isLongPress = true;
+//                         updatePokemonStatus(pokemonId, 'shiny');
+//                         // console.log('Long press activated');
+//                         clickCount = 0;
+//                     }
+//                 }, LONG_PRESS_DELAY);
+//             }
+//         },
+//         end: (event) => {
+//             event.preventDefault();
+//             clearTimeout(longPressTimer);
             
-            if (!isLongPress) {
-                if (clickCount === 1) {
-                    clickTimer = setTimeout(() => {
-                        if (clickCount === 1) {
-                            // Single click
-                            const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
-                            const newStatus = pokemon.status === 'unseen' ? 'seen' : 'unseen';
-                            updatePokemonStatus(pokemonId, newStatus);
-                            console.log('Single click activated');
-                        }
-                        clickCount = 0;
-                    }, CLICK_DELAY);
-                } else if (clickCount === 2) {
-                    console.log(clickCount)
-                    clearTimeout(clickTimer);
-                    // Double click
-                    updatePokemonStatus(pokemonId, 'caught');
-                    console.log('Double click activated');
-                    clickCount = 0;
-                }
-            }
-        },
-        cancel: () => {
-            clearTimeout(clickTimer);
-            clearTimeout(longPressTimer);
-            clickCount = 0;
-            isLongPress = false;
-        }
-    };
-}
+//             if (!isLongPress) {
+//                 if (clickCount === 1) {
+//                     clickTimer = setTimeout(() => {
+//                         if (clickCount === 1) {
+//                             // Single click
+//                             const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
+//                             const newStatus = pokemon.status === 'unseen' ? 'seen' : 'unseen';
+//                             updatePokemonStatus(pokemonId, newStatus);
+//                             console.log('Single click activated');
+//                         }
+//                         clickCount = 0;
+//                     }, CLICK_DELAY);
+//                 } else if (clickCount === 2) {
+//                     console.log(clickCount)
+//                     clearTimeout(clickTimer);
+//                     // Double click
+//                     updatePokemonStatus(pokemonId, 'caught');
+//                     console.log('Double click activated');
+//                     clickCount = 0;
+//                 }
+//             }
+//         },
+//         cancel: () => {
+//             clearTimeout(clickTimer);
+//             clearTimeout(longPressTimer);
+//             clickCount = 0;
+//             isLongPress = false;
+//         }
+//     };
+// }
 
 export function updatePokemonStatus(pokemonId, status) {
     const pokemon = pokemonData.find(p => p.id === parseInt(pokemonId));
