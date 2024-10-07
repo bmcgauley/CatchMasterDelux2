@@ -1,16 +1,6 @@
-import {
-	fetchUserPokemonStatus,
-	updatePokemonStatus,
-	loadPokemonDataFromLocalStorage,
-	savePokemonDataToLocalStorage,
-	pokemonData,
-	pendingUpdates,
-	// handlePokemonClick,
-} from './pokedex.js';
+import { fetchUserPokemonStatus, pokemonData } from './pokedex.js';
 import { currentUser } from './auth.js';
-import { loadGames } from './games.js';
-import { currentGameId, handlePokemonBoxClick } from './pokebox.js';
-import { getGameSpecificPokemon } from './pokedexService.js';
+import { handlePokemonBoxClick } from './pokebox.js';
 // import { initializePokebox } from './pokebox.js';
 // import { pokemonData } from './pokedex.js';
 
@@ -20,26 +10,13 @@ let currentPage = 1;
 const pokemonPerPage = 20;
 
 export function updateMainDisplay() {
-	let mainContainer = null;
-	if (window.location.pathname === '/src/pokedex.html') {
+	let mainContainer = window.location.href.includes('pokedex.html');
+	if (mainContainer) {
 		mainContainer = document.getElementById('main-container');
-		// console.log('in pokedex path')
-		// console.log(mainContainer)
 		mainContainer.innerHTML =
 			createSortingColumn() + '<div id="pokedex"></div>';
 		displayPokemon();
-	}
-	// if(window.location.pathname === "/src/games.html") {
-	//     mainContainer = document.getElementById('games-container')
-	//     // console.log('in games path')
-	//     // console.log(mainContainer)
-	//     // mainContainer.innerHTML = createSortingColumn() + '<div id="sorting-column-games"></div>';
-	//     loadGames()
-	// }
-	if (!mainContainer) {
-		console.error('Main container not found');
-		return;
-	}
+	} 
 }
 function createSortingColumn() {
 	const generations = {
@@ -92,57 +69,10 @@ function getAppropriateImage(pokemon) {
 		return pokemon.image;
 	}
 }
-export async function displayPokemon(pokemon) {
-	// export function displayPokemon() {
-	// const filteredPokemon = await getGameSpecificPokemon(currentGameId.pokemon);
-	// console.log(filteredPokemon)
-	// const totalPages = Math.ceil(filteredPokemon.length / pokemonPerPage);
-	// const startIndex = (currentPage - 1) * pokemonPerPage;
-	// const endIndex = startIndex + pokemonPerPage;
-	// const paginatedPokemon = filteredPokemon.slice(startIndex, endIndex);
-
-	console.log(pokemon.status);
-	// 	let pokemonHTMLString = paginatedPokemon
-	// 		.map(
-	// 			(pokemon) => `
-	//             <li class="pokemon-card ${pokemon.status} ${
-	// 				pokemon.type.split(', ')[0]
-	// 			}" data-id="${pokemon.id}">
-	//     <img class="card-image" src="${getAppropriateImage(pokemon)}" alt="${
-	// 				pokemon.name
-	// 			}"/>
-	//     ${pokemon.status === 'caught' ? '<div class="pokeball-icon"></div>' : ''}
-
-	// </li>
-	//     `
-	// 		)
-	// 		.join('');
-
-	// 	const paginationHTML = `
-	//         <div class="pagination">
-	//             <button class="nav-button prev" onclick="prevPage()" ${
-	// 							currentPage === 1 ? 'disabled' : ''
-	// 						}>◀</button>
-	//             <span>Page ${currentPage} of ${totalPages}</span>
-	//             <button class="nav-button next" onclick="nextPage()" ${
-	// 							currentPage === totalPages ? 'disabled' : ''
-	// 						}>▶</button>
-	//         </div>
-	//     `;
-
-	// 	document.getElementById('pokebox-grid').innerHTML = `
-	//         <div class="pokedex-grid">
-	//             ${pokemonHTMLString}
-	//         </div>
-	//         ${paginationHTML}
-	//     `;
-	// document.getElementById('pokedex').innerHTML = pokemonHTMLString;
-
-	// Add event listeners
+export async function displayPokemon() {
+	// console.log(pokemon.status);
 	document.querySelectorAll('.pokemon-card').forEach((card) => {
 		const pokemonId = card.getAttribute('data-id');
-		
-		
 
 		const clickHandler = handlePokemonBoxClick(pokemonId);
 

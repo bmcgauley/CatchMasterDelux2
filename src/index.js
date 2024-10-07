@@ -20,7 +20,7 @@ import {
     pokemonData,
 } from './pokedex.js';
 // src/index.js
-import { getPokemon, getPokemonSpecies } from './pokedexService.js';
+
 
 // async function init() {
 //   try {
@@ -35,8 +35,6 @@ import { getPokemon, getPokemonSpecies } from './pokedexService.js';
 // }
 
 // init();
-
-init();
 async function initializeApp() {
     try {
         // Try to load data from local storage

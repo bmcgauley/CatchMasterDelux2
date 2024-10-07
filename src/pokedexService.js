@@ -209,19 +209,19 @@ export async function loadPokemonForGame(gameName) {
 	}
 }
 
-export function init() {
-	const gameSelector = document.getElementById('game-selector');
-	if (gameSelector) {
-		gameSelector.addEventListener('change', (event) => {
-			const selectedGame = event.target.value;
-			if (selectedGame) {
-				loadPokemonForGame(selectedGame);
-			}
-		});
-	} else {
-		console.error('Game selector element not found');
-	}
-}
+// export function init() {
+// 	const gameSelector = document.getElementById('game-selector');
+// 	if (gameSelector) {
+// 		gameSelector.addEventListener('change', (event) => {
+// 			const selectedGame = event.target.value;
+// 			if (selectedGame) {
+// 				loadPokemonForGame(selectedGame);
+// 			}
+// 		});
+// 	} else {
+// 		console.error('Game selector element not found');
+// 	}
+// }
 
-document.addEventListener('DOMContentLoaded', init);
+// document.addEventListener('DOMContentLoaded', init);
 
