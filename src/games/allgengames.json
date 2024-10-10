@@ -1,0 +1,117 @@
+{
+    "games": [
+      {
+        "id": "red-green",
+        "title": "Pokémon Red and Green",
+        "releaseDate": {
+          "japan": "1996-02-27",
+          "northAmerica": null,
+          "europe": null,
+          "australia": null
+        },
+        "generation": 1,
+        "region": "Kanto",
+        "platforms": ["Game Boy"],
+        "developers": ["Game Freak"],
+        "publishers": ["Nintendo"],
+        "versions": ["Red", "Green"],
+        "languages": ["Japanese"],
+        "playerCount": {
+          "singlePlayer": true,
+          "multiPlayer": {
+            "local": true,
+            "online": false
+          }
+        },
+        "features": [
+          "Turn-based battles",
+          "Pokémon catching",
+          "Gym battles",
+          "Elite Four",
+          "Trading"
+        ],
+        "pokedexCount": 151,
+        "newPokemon": 151,
+        "boxArtUrl": "https://example.com/red-green-boxart.jpg",
+        "remakes": ["Pokémon FireRed and LeafGreen"],
+        "prequels": [],
+        "sequels": ["Pokémon Gold and Silver"]
+      },
+      {
+        "id": "blue-jp",
+        "title": "Pokémon Blue (Japan)",
+        "releaseDate": {
+          "japan": "1996-10-15",
+          "northAmerica": null,
+          "europe": null,
+          "australia": null
+        },
+        "generation": 1,
+        "region": "Kanto",
+        "platforms": ["Game Boy"],
+        "developers": ["Game Freak"],
+        "publishers": ["Nintendo"],
+        "versions": ["Blue"],
+        "languages": ["Japanese"],
+        "playerCount": {
+          "singlePlayer": true,
+          "multiPlayer": {
+            "local": true,
+            "online": false
+          }
+        },
+        "features": [
+          "Turn-based battles",
+          "Pokémon catching",
+          "Gym battles",
+          "Elite Four",
+          "Trading",
+          "Updated graphics from Red and Green"
+        ],
+        "pokedexCount": 151,
+        "newPokemon": 0,
+        "boxArtUrl": "https://example.com/blue-jp-boxart.jpg",
+        "remakes": ["Pokémon FireRed and LeafGreen"],
+        "prequels": [],
+        "sequels": ["Pokémon Gold and Silver"]
+      },
+      {
+        "id": "blue",
+        "title": "Pokémon Red and Blue (International)",
+        "releaseDate": {
+          "japan": null,
+          "northAmerica": "1998-09-28",
+          "europe": "1999-10-05",
+          "australia": "1998-10-23"
+        },
+        "generation": 1,
+        "region": "Kanto",
+        "platforms": ["Game Boy"],
+        "developers": ["Game Freak"],
+        "publishers": ["Nintendo"],
+        "versions": ["Red", "Blue"],
+        "languages": ["English", "French", "German", "Italian", "Spanish"],
+        "playerCount": {
+          "singlePlayer": true,
+          "multiPlayer": {
+            "local": true,
+            "online": false
+          }
+        },
+        "features": [
+          "Turn-based battles",
+          "Pokémon catching",
+          "Gym battles",
+          "Elite Four",
+          "Trading",
+          "Based on Japanese Blue version"
+        ],
+        "pokedexCount": 151,
+        "newPokemon": 0,
+        "boxArtUrl": "https://archives.bulbagarden.net/media/upload/thumb/b/b5/Blue_JP_boxart.png/200px-Blue_JP_boxart.png",
+        "remakes": ["Pokémon FireRed and LeafGreen"],
+        "prequels": [],
+        "sequels": ["Pokémon Gold and Silver"]
+      }
+    ]
+  }

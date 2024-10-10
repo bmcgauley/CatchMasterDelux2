@@ -49,7 +49,7 @@ function loadPokemonData() {
 }
 
 //
-function loadGameSpecificData() {
+function loadGameSpecificData(gameId, instanceId) {
 	let gameData = JSON.parse(localStorage.getItem('gameData')) || {};
 	if (!gameData[currentGameId]) {
 		gameData[currentGameId] = {
