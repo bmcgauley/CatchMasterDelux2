@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+    <!-- Firebase SDK scripts -->
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-red-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <img src="/images/logo.png" alt="CatchMaster Delux Logo" width="32" height="32" />
+                <span class="text-2xl font-bold">CatchMaster Delux</span>
+            </a>
+            <div id="auth-container">
+                <button id="signInButton" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-4 py-2 rounded">Sign In</button>
+                <button id="signOutButton" style="display: none;" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Sign Out</button>
+                <span id="userDisplay"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Add this after the header section and before the main content -->
+    <%- include('partials/nav') %>
+
+    <main class="flex-grow bg-white">
+        <section id="hero" class="bg-yellow-400 py-20">
+            <div class="container mx-auto flex items-center justify-between">
+                <div class="max-w-lg">
+                    <h1 class="text-4xl font-bold mb-4 text-blue-900">Catch 'Em All with CatchMaster Delux!</h1>
+                    <p class="mb-6 text-blue-800">Your ultimate Pokémon tracking experience starts here. Keep tabs on your collection, progress, and achievements across all games.</p>
+                    <a href="/games" id="getStartedButton" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold">Get Started</a>
+                </div>
+                <img src="/assets/hero-image.png" alt="Pokémon Tracker Hero" width="500" height="300" class="rounded-lg shadow-lg" />
+            </div>
+        </section>
+
+        <section id="features" class="py-20 bg-white">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-10 text-center text-blue-900">Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2 text-blue-900">Complete Pokédex Tracking</h3>
+                        <p class="text-gray-700">Keep tabs on your Pokédex completion across all regions and generations.</p>
+                    </div>
+                    <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2 text-blue-900">Game Collection Management</h3>
+                        <p class="text-gray-700">Organize and track your Pokémon game collection with ease.</p>
+                    </div>
+                    <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2 text-blue-900">Team Building</h3>
+                        <p class="text-gray-700">Create and manage your perfect Pokémon team for each game.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta" class="py-20 bg-blue-600 text-white text-center">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-4">Start Your Pokémon Adventure Today</h2>
+                <p class="mb-6 max-w-2xl mx-auto">Join thousands of trainers who are already tracking their Pokémon journey with CatchMaster Delux. It's free to start!</p>
+                <button id="signUpButton" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 py-3 rounded-lg font-bold">Sign Up Now</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 CatchMaster Delux. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="/js/index.js"></script>
+</body>
+
+</html>

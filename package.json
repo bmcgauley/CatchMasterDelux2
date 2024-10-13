@@ -1,8 +1,18 @@
 {
-  "main": "./src/index.js",
-  "type": "module",
+  "name": "catchmaster-delux",
+  "version": "1.0.0",
+  "description": "CatchMaster Delux - A Pokemon-inspired game",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
-    "node": "^20.18.0",
-    "pokedex-promise-v2": "^4.2.0"
+    "express": "^4.17.1",
+    "ejs": "^3.1.6",
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
