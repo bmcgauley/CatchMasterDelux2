@@ -399,47 +399,47 @@ This compilation provides a quick reference for the main technologies you'll be 
 
 ## Current File Structure
 
-/
+./
 ├── config/
-│   └── firebase.js  (Moved from src/firebase.js)
+│   └── firebase.js
 ├── controllers/
-│   ├── gameController.js  (Existing)
-│   ├── pokemonController.js  (New, split from gameController.js)
-│   └── userController.js  (New, for user-related operations)
+│   ├── gameController.js
+│   ├── pokemonController.js
+│   └── userController.js
 ├── models/
-│   ├── Game.js  (Existing)
-│   ├── Pokemon.js  (New, for Pokémon-specific data structures)
-│   └── User.js  (New, for user data structures)
+│   ├── Game.js
+│   ├── Pokemon.js
+│   └── User.js
 ├── public/
-│   ├── images/  (Existing)
-│   └── styles/  (Existing)
+│   ├── images/
+│   └── styles/
 ├── routes/
-│   ├── gameRoutes.js  (Existing)
-│   ├── pokemonRoutes.js  (New, split from gameRoutes.js)
-│   └── userRoutes.js  (New, for user-related routes)
+│   ├── gameRoutes.js
+│   ├── pokemonRoutes.js
+│   └── userRoutes.js
 ├── services/
-│   ├── firebaseService.js  (New, for Firebase-specific operations)
-│   └── pokeApiService.js  (New, for PokeAPI interactions)
+│   ├── firebaseService.js
+│   └── pokeApiService.js
 ├── utils/
-│   ├── cacheUtils.js  (New, for caching operations)
-│   └── helpers.js  (Existing, renamed from utils.js)
+│   ├── cacheUtils.js
+│   └── helpers.js
 ├── views/
 │   ├── partials/
-│   │   ├── header.ejs  (Existing)
-│   │   ├── footer.ejs  (Existing)
-│   │   └── nav.ejs  (Existing)
+│   │   ├── header.ejs
+│   │   ├── footer.ejs
+│   │   └── nav.ejs
 │   ├── pages/
-│   │   ├── Games.ejs  (Existing)
-│   │   ├── home.ejs  (New, for the home page)
-│   │   └── user-profile.ejs  (New, for user profile page)
+│   │   ├── Games.ejs
+│   │   ├── home.ejs
+│   │   └── user-profile.ejs
 │   └── layouts/
-│       └── main.ejs  (New, for the main layout template)
-├── .env  
-├── .gitignore  (Existing)
-├── app.js  (Existing)
-├── package.json  (Existing)
-├── README.md  
-└── server.js  
+│       └── main.ejs
+├── .env
+├── .gitignore
+├── app.js
+├── package.json
+├── README.md
+└── server.js
 
 ## Additional Requirements
 
