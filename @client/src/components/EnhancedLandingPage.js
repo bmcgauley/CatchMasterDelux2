@@ -3,7 +3,7 @@ import { Button } from "./ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Input } from "./ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/Table";
-import { ChevronRight, CheckCircle2, XCircle, Target, Users, Repeat, BarChart, Smartphone } from "lucide-react";
+import { ChevronRight, CheckCircle, XCircle, Target, Users, Repeat, BarChart, Smartphone } from "lucide-react";
 
 export default function EnhancedLandingPage() {
   const [email, setEmail] = useState("");
@@ -116,17 +116,19 @@ export default function EnhancedLandingPage() {
 
   return (
     <div className="min-h-screen bg-[#f0f0f0] text-gray-900">
-      <header className="bg-red-600 text-white py-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Pokémon Tracker</h1>
-          <nav>
-            <ul className="flex space-x-4">
-              <li><a href="#features">Features</a></li>
-              <li><a href="#comparison">Comparison</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </nav>
+      <header className="bg-red-600 text-white shadow-md">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <h1 className="text-2xl font-bold">Pokémon Tracker</h1>
+            <nav>
+              <ul className="flex space-x-4">
+                <li><a href="#features" className="hover:text-yellow-300 transition-colors">Features</a></li>
+                <li><a href="#comparison" className="hover:text-yellow-300 transition-colors">Comparison</a></li>
+                <li><a href="#about" className="hover:text-yellow-300 transition-colors">About</a></li>
+                <li><a href="#contact" className="hover:text-yellow-300 transition-colors">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </header>
 
@@ -141,20 +143,20 @@ export default function EnhancedLandingPage() {
 
         <section id="features" className="mb-16">
           <h3 className="text-3xl font-bold mb-8 text-center text-gray-900">Key Features</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((category, index) => (
               <Card key={index} className="border-2 border-yellow-400 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="bg-gray-900 text-yellow-300 p-4">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    {React.createElement(category.icon, { className: "w-6 h-6 text-yellow-300" })}
+                <CardHeader className="bg-gray-900 text-yellow-300">
+                  <CardTitle className="flex items-center gap-2">
+                    <category.icon className="w-6 h-6" />
                     {category.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="bg-white p-4">
+                <CardContent className="bg-white">
                   <ul className="space-y-2">
                     {category.items.map((item, itemIndex) => (
                       <li key={itemIndex} className="flex items-center">
-                        <CheckCircle2 className="mr-2 h-4 w-4 text-green-500 flex-shrink-0" />
+                        <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -167,39 +169,37 @@ export default function EnhancedLandingPage() {
 
         <section id="comparison" className="mb-16">
           <h3 className="text-3xl font-bold mb-8 text-center text-gray-900">How We Compare</h3>
-          <Card className="border-2 border-yellow-400 shadow-lg overflow-hidden">
-            <CardHeader className="bg-gray-900 text-yellow-300 p-4">
+          <Card className="border-2 border-yellow-400 shadow-lg">
+            <CardHeader className="bg-gray-900 text-yellow-300">
               <CardTitle className="text-2xl">Competitive Analysis</CardTitle>
             </CardHeader>
             <CardContent className="bg-gradient-to-br from-gray-100 to-yellow-100 p-0">
-              <div className="overflow-x-auto">
-                <Table className="w-full">
-                  <TableHeader>
-                    <TableRow className="bg-gray-900 text-white">
-                      <TableHead className="text-left p-3">Feature</TableHead>
-                      {competitors.map((competitor, index) => (
-                        <TableHead key={index} className="text-center p-3">{competitor.name}</TableHead>
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-200">
+                    <TableHead className="text-gray-900">Feature</TableHead>
+                    {competitors.map((competitor, index) => (
+                      <TableHead key={index} className="text-gray-900">{competitor.name}</TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {Object.keys(competitors[0].features).map((feature, index) => (
+                    <TableRow key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                      <TableCell className="font-medium text-gray-900">{feature}</TableCell>
+                      {competitors.map((competitor, compIndex) => (
+                        <TableCell key={compIndex}>
+                          {competitor.features[feature] ? (
+                            <CheckCircle className="text-green-500 mx-auto" />
+                          ) : (
+                            <XCircle className="text-red-500 mx-auto" />
+                          )}
+                        </TableCell>
                       ))}
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {Object.keys(competitors[0].features).map((feature, index) => (
-                      <TableRow key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <TableCell className="font-medium text-gray-900 p-3">{feature}</TableCell>
-                        {competitors.map((competitor, compIndex) => (
-                          <TableCell key={compIndex} className="text-center p-3">
-                            {competitor.features[feature] ? (
-                              <CheckCircle2 className="text-green-500 mx-auto w-6 h-6" />
-                            ) : (
-                              <XCircle className="text-red-500 mx-auto w-6 h-6" />
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </section>
@@ -228,10 +228,10 @@ export default function EnhancedLandingPage() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-grow mr-2 border-gray-300 focus:border-red-500 focus:ring-red-500"
+              className="flex-grow mr-2"
               required
             />
-            <Button type="submit" className="bg-red-600 text-white hover:bg-red-700 px-6 py-2">
+            <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">
               Subscribe
             </Button>
           </form>
