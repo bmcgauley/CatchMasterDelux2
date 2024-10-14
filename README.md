@@ -399,7 +399,7 @@ This compilation provides a quick reference for the main technologies you'll be 
 
 ## Current File Structure
 
-./
+```./
 ├── config/
 │   └── firebase.js
 ├── controllers/
@@ -440,7 +440,7 @@ This compilation provides a quick reference for the main technologies you'll be 
 ├── package.json
 ├── README.md
 └── server.js
-
+```
 ## Additional Requirements
 
 ### 1. Project Setup
