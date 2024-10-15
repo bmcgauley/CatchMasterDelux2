@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "./ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Input } from "./ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/Table";
 import { ChevronRight, CheckCircle2, XCircle, Target, Users, Repeat, BarChart, Smartphone } from "lucide-react";
+import { Link, useLocation } from 'react-router-dom';
 
 export default function EnhancedLandingPage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
+
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
@@ -115,21 +128,7 @@ export default function EnhancedLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f0f0f0] text-gray-900">
-      <header className="bg-red-600 text-white py-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Pokémon Tracker</h1>
-          <nav>
-            <ul className="flex space-x-4">
-              <li><a href="#features">Features</a></li>
-              <li><a href="#comparison">Comparison</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
+    <div className="bg-[#f0f0f0] text-gray-900">
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <section className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-gray-900">Track Your Pokémon Journey Like Never Before</h2>
@@ -237,21 +236,6 @@ export default function EnhancedLandingPage() {
           </form>
         </section>
       </main>
-
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; 2024 Pokémon Tracker. All rights reserved.</p>
-            <nav className="mt-4 md:mt-0">
-              <ul className="flex space-x-4">
-                <li><a href="#" className="hover:text-yellow-300">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Contact Us</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
