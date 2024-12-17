@@ -5,7 +5,7 @@ import {
     currentUser,
     clearLocalStorage,
 } from './auth.js';
-import { fetchPokemon } from './fetchPokemon.js';
+import fetchPokemon from './fetchPokemon.js';
 import {
     updateUIForSignedInUser,
     updateUIForSignedOutUser,

@@ -3,7 +3,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/fireba
 import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js';
 import { updateUIForSignedInUser, updateUIForSignedOutUser } from './ui.js';
 import { fetchUserPokemonStatus } from './pokedex.js';
-import { fetchPokemon } from './fetchPokemon.js';
+import fetchPokemon from './fetchPokemon.js';
 
 // Firebase configuration
 const firebaseAppConfig = {

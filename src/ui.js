@@ -157,7 +157,7 @@ export function displayPokemon() {
         </div>
     `;
 
-	document.getElementById('pokedex').innerHTML = `
+	document.getElementById('pokemon-container').innerHTML = `
         <div class="pokedex-grid">
             ${pokemonHTMLString}
         </div>

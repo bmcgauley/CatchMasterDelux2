@@ -5,6 +5,7 @@ import {
 	pokemonData
 } from './pokedex.js';
 import { displayPokemon } from './ui.js';
+import fetchPokemon from './fetchPokemon.js'
 // let pokemonData = []
 let gameSpecificPokemon = [];
 const POKEMON_PER_BOX = 20;
@@ -48,7 +49,7 @@ function loadPokemonData() {
 	let pokemonData = JSON.parse(localStorage.getItem('pokemonData'));
 	if (!pokemonData) {
 		try {
-			pokemonData = fetchPokemonDataFromAPI(); // You need to implement this function
+			pokemonData = fetchPokemon(); // You need to implement this function
 			localStorage.setItem('pokemonData', JSON.stringify(pokemonData));
 		} catch (error) {
 			console.error('Error fetching Pokémon data:', error);
@@ -124,7 +125,7 @@ function displayGameInfo() {
 }
 // Function to render the current PC box
 async function renderCurrentBox() {
-	const pcBoxElement = document.getElementById('pc-box');
+	const pcBoxElement = document.getElementById('pokemon-container');
 	pcBoxElement.innerHTML = '';
 	pcBoxElement.setAttribute('class', 'pokebox-grid');
 	const gameData = await loadGameSpecificData();

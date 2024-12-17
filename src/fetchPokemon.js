@@ -56,7 +56,7 @@ async function fetchWithRetry(url, retries = 3) {
     }
 }
 
-export async function fetchPokemon() {
+export default async function fetchPokemon() {
     const failedFetches = [];
     const successfulFetches = [];
 

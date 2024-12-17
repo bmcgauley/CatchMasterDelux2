@@ -2,6 +2,7 @@
 import {db, getFirestore, doc, getDoc, setDoc, currentUser } from './auth.js';
 import { displayPokemon } from './ui.js';
 // import { boxData } from './pokebox.js';
+// import fetchPokemon from 'fetchPokemon.js'
 
 // let db = getFirestore();
 const pokemonData = [];
