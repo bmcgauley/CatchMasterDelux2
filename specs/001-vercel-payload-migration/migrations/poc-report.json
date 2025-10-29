@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "startedAt": "2025-10-29T20:52:10.193Z",
+    "mode": "dry-run",
+    "sourceFile": "C:\\GitHub\\GithubCatchMasterDelux2\\specs\\001-vercel-payload-migration\\migrations\\sample-firebase-export.json",
+    "completedAt": "2025-10-29T20:52:10.200Z",
+    "durationMs": 7
+  },
+  "summary": {
+    "users": {
+      "total": 2,
+      "succeeded": 2,
+      "failed": 0
+    },
+    "media": {
+      "total": 3,
+      "succeeded": 3,
+      "failed": 0
+    },
+    "gameInstances": {
+      "total": 2,
+      "succeeded": 2,
+      "failed": 0
+    }
+  },
+  "details": {
+    "users": [
+      {
+        "firebaseUid": "firebase-user-001",
+        "payloadUserId": "0d6ec69a-0f95-4b62-ae2d-a20ae37b6d55",
+        "email": "ash@pokemon.com",
+        "displayName": "Ash Ketchum",
+        "status": "success"
+      },
+      {
+        "firebaseUid": "firebase-user-002",
+        "payloadUserId": "200b764d-916c-40ca-a683-e19aa0770256",
+        "email": "misty@pokemon.com",
+        "displayName": "Misty",
+        "status": "success"
+      }
+    ],
+    "media": [
+      {
+        "payloadMediaId": "94d23da2-a80a-40b5-aafa-ff1a182e41c3",
+        "filename": "pikachu-shiny.png",
+        "firebasePath": "user-uploads/sprites/pikachu-shiny.png",
+        "vercelBlobUrl": "https://abc123xyz.public.blob.vercel-storage.com/migrations/catchmaster-prod/user-uploads/sprites/pikachu-shiny.png",
+        "providerKey": "migrations/catchmaster-prod/user-uploads/sprites/pikachu-shiny.png",
+        "checksum": "rL0Y20zC+Fzt72VPzMSk2A==",
+        "size": 45678,
+        "mimeType": "image/png",
+        "uploadedBy": "0d6ec69a-0f95-4b62-ae2d-a20ae37b6d55",
+        "status": "success"
+      },
+      {
+        "payloadMediaId": "8cd539c2-c4d8-46c0-92ab-0d15f29bde2e",
+        "filename": "box-1-red.png",
+        "firebasePath": "user-uploads/boxes/box-1-red.png",
+        "vercelBlobUrl": "https://abc123xyz.public.blob.vercel-storage.com/migrations/catchmaster-prod/user-uploads/boxes/box-1-red.png",
+        "providerKey": "migrations/catchmaster-prod/user-uploads/boxes/box-1-red.png",
+        "checksum": "xN9k2Pz+Qw3Rs7VpM3kA1B==",
+        "size": 123456,
+        "mimeType": "image/png",
+        "uploadedBy": "0d6ec69a-0f95-4b62-ae2d-a20ae37b6d55",
+        "status": "success"
+      },
+      {
+        "payloadMediaId": "753990fb-85c0-4c0b-81fd-bc2854df4e2b",
+        "filename": "starmie.png",
+        "firebasePath": "user-uploads/sprites/starmie.png",
+        "vercelBlobUrl": "https://abc123xyz.public.blob.vercel-storage.com/migrations/catchmaster-prod/user-uploads/sprites/starmie.png",
+        "providerKey": "migrations/catchmaster-prod/user-uploads/sprites/starmie.png",
+        "checksum": "bC4Y11zD+Hzt82WQzNSm3C==",
+        "size": 34567,
+        "mimeType": "image/png",
+        "uploadedBy": "200b764d-916c-40ca-a683-e19aa0770256",
+        "status": "success"
+      }
+    ],
+    "gameInstances": [
+      {
+        "payloadGameId": "45ac53de-1121-4b94-b4e5-5fb26dbe66e0",
+        "firebaseDocId": "game-doc-001",
+        "gameId": "pokemon-red",
+        "userId": "0d6ec69a-0f95-4b62-ae2d-a20ae37b6d55",
+        "status": "success"
+      },
+      {
+        "payloadGameId": "499b28dc-c309-4bdf-b1a7-f904d7f37b0f",
+        "firebaseDocId": "game-doc-002",
+        "gameId": "pokemon-blue",
+        "userId": "200b764d-916c-40ca-a683-e19aa0770256",
+        "status": "success"
+      }
+    ]
+  },
+  "errors": []
+}
