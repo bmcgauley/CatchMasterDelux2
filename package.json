@@ -8,6 +8,8 @@
     "server": "nodemon app.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:payload": "cd payload && npx payload dev",
+    "dev:client": "cd client && npm run dev",
     "build": "cd client && npm run build"
   },
   "dependencies": {

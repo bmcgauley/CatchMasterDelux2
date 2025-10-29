@@ -1,0 +1,41 @@
+{
+  "migration": {
+    "activeWindowMonths": 12,
+    "batchSize": 50,
+    "retentionDays": 90,
+    "dryRun": true,
+    "maxRetries": 3,
+    "retryDelayMs": 1000
+  },
+  "storage": {
+    "providers": {
+      "primary": "vercel-blob",
+      "fallback": "supabase"
+    },
+    "vercelBlob": {
+      "maxFileSizeMB": 10,
+      "allowedMimeTypes": [
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+        "image/webp",
+        "image/svg+xml"
+      ]
+    },
+    "supabase": {
+      "bucket": "catchmaster-media",
+      "maxFileSizeMB": 50
+    }
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "includeCorrelationId": true
+  },
+  "validation": {
+    "checksumAlgorithm": "sha256",
+    "verifyUploads": true,
+    "validateMimeTypes": true
+  },
+  "description": "Default configuration for Vercel + Payload migration. Override via environment variables or migration scripts."
+}
