@@ -1,0 +1,18 @@
+{
+  "name": "catchmaster-payload",
+  "version": "1.0.0",
+  "description": "Payload CMS for CatchMaster Delux",
+  "main": "index.js",
+  "scripts": {
+    "dev": "payload dev",
+    "build": "payload build",
+    "start": "payload start"
+  },
+  "keywords": ["payload", "cms", "pokemon", "catchmaster"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "payload": "^3.0.0",
+    "@payloadcms/storage-vercel-blob": "^1.0.0"
+  }
+}
