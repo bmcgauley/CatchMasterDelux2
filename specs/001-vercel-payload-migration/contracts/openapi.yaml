@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: GithubCatchMasterDelux2 Migration & Storage API (contract)
+  version: '0.1.0'
+servers:
+  - url: /api
+paths:
+  /upload:
+    post:
+      summary: Upload a media file (primary uploads go to Vercel Blob)
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                userId:
+                  type: string
+      responses:
+        '200':
+          description: Uploaded with metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaAsset'
+        '500':
+          description: Upload failed
+
+  /migration/run:
+    post:
+      summary: Run a migration job for a batch of users (admin-only)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userIds:
+                  type: array
+                  items:
+                    type: string
+                dryRun:
+                  type: boolean
+      responses:
+        '200':
+          description: Job accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  status:
+                    type: string
+
+  /migration/status/{jobId}:
+    get:
+      summary: Get migration job status
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  progress:
+                    type: number
+                  errors:
+                    type: array
+                    items:
+                      type: string
+
+components:
+  schemas:
+    MediaAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        filename:
+          type: string
+        mimeType:
+          type: string
+        size:
+          type: integer
+        storageProvider:
+          type: string
+        providerUrl:
+          type: string
+        uploadedBy:
+          type: string
