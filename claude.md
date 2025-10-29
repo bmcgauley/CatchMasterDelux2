@@ -359,7 +359,7 @@ When working on this project, follow this strict workflow pattern:
 2. **Stage Changes**: Stage all changes related to the task (`git add`)
 3. **Mark Task Complete**: Update the task status (via gh issues CLI)
 4. **Check Milestone**: Determine if current work represents a major milestone in spec or phase
-5. **Create PR if Milestone**: If at a major milestone, create an official PR back to master
+5. **Create PR if Milestone**: If at a major milestone, create an official PR back to master. IMPORTANT: Only merge back to master after conducting `/security-audit` and addressing any high/critical findings reported by that audit.
 6. **Move to Next Task**: Proceed to the next task only after completing the above steps
 
 ### Branch Strategy
