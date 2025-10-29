@@ -1,0 +1,150 @@
+{
+  "users": [
+    {
+      "uid": "firebase-user-001",
+      "email": "ash@pokemon.com",
+      "displayName": "Ash Ketchum",
+      "photoURL": "https://firebasestorage.googleapis.com/v0/b/catchmaster-prod.appspot.com/o/avatars%2Fash.jpg",
+      "metadata": {
+        "creationTime": "2023-01-15T10:30:00.000Z",
+        "lastSignInTime": "2025-10-28T14:22:00.000Z"
+      },
+      "customField": "Pallet Town trainer"
+    },
+    {
+      "uid": "firebase-user-002",
+      "email": "misty@pokemon.com",
+      "displayName": "Misty",
+      "photoURL": "https://firebasestorage.googleapis.com/v0/b/catchmaster-prod.appspot.com/o/avatars%2Fmisty.jpg",
+      "metadata": {
+        "creationTime": "2023-02-10T08:15:00.000Z",
+        "lastSignInTime": "2025-10-27T09:45:00.000Z"
+      },
+      "customField": "Cerulean City Gym Leader"
+    }
+  ],
+  "storageObjects": [
+    {
+      "name": "user-uploads/sprites/pikachu-shiny.png",
+      "bucket": "catchmaster-prod.appspot.com",
+      "contentType": "image/png",
+      "size": 45678,
+      "md5Hash": "rL0Y20zC+Fzt72VPzMSk2A==",
+      "timeCreated": "2024-03-10T08:15:00.000Z",
+      "metadata": {
+        "uploadedBy": "firebase-user-001",
+        "altText": "Shiny Pikachu sprite"
+      }
+    },
+    {
+      "name": "user-uploads/boxes/box-1-red.png",
+      "bucket": "catchmaster-prod.appspot.com",
+      "contentType": "image/png",
+      "size": 123456,
+      "md5Hash": "xN9k2Pz+Qw3Rs7VpM3kA1B==",
+      "timeCreated": "2024-03-12T10:30:00.000Z",
+      "metadata": {
+        "uploadedBy": "firebase-user-001",
+        "altText": "Pokemon Red Box 1 screenshot"
+      }
+    },
+    {
+      "name": "user-uploads/sprites/starmie.png",
+      "bucket": "catchmaster-prod.appspot.com",
+      "contentType": "image/png",
+      "size": 34567,
+      "md5Hash": "bC4Y11zD+Hzt82WQzNSm3C==",
+      "timeCreated": "2024-04-05T14:20:00.000Z",
+      "metadata": {
+        "uploadedBy": "firebase-user-002",
+        "altText": "Starmie sprite"
+      }
+    }
+  ],
+  "gameInstances": [
+    {
+      "id": "game-doc-001",
+      "userId": "firebase-user-001",
+      "gameId": "pokemon-red",
+      "ownership": {
+        "condition": "good",
+        "purchaseDate": "2023-05-20",
+        "purchasePrice": 29.99
+      },
+      "progress": {
+        "badges": 8,
+        "pokedexCompletion": 142,
+        "playTime": 48.5
+      },
+      "boxes": [
+        {
+          "number": 1,
+          "pokemon": [
+            {
+              "species": "pikachu",
+              "level": 55,
+              "nickname": "Sparky",
+              "isShiny": true
+            }
+          ]
+        }
+      ],
+      "party": [
+        {
+          "species": "pikachu",
+          "level": 55,
+          "nickname": "Sparky"
+        }
+      ],
+      "createdAt": "2023-05-21T00:00:00.000Z",
+      "updatedAt": "2025-10-28T12:00:00.000Z"
+    },
+    {
+      "id": "game-doc-002",
+      "userId": "firebase-user-002",
+      "gameId": "pokemon-blue",
+      "ownership": {
+        "condition": "excellent",
+        "purchaseDate": "2023-06-15",
+        "purchasePrice": 35.00
+      },
+      "progress": {
+        "badges": 6,
+        "pokedexCompletion": 98,
+        "playTime": 32.0
+      },
+      "boxes": [
+        {
+          "number": 1,
+          "pokemon": [
+            {
+              "species": "starmie",
+              "level": 42,
+              "nickname": null,
+              "isShiny": false
+            }
+          ]
+        }
+      ],
+      "party": [
+        {
+          "species": "starmie",
+          "level": 42,
+          "nickname": null
+        }
+      ],
+      "createdAt": "2023-06-16T00:00:00.000Z",
+      "updatedAt": "2025-10-27T15:30:00.000Z"
+    }
+  ],
+  "_metadata": {
+    "exportedAt": "2025-10-29T00:00:00.000Z",
+    "exportedBy": "migration-tool",
+    "version": "1.0.0",
+    "totalRecords": {
+      "users": 2,
+      "storageObjects": 3,
+      "gameInstances": 2
+    }
+  }
+}
